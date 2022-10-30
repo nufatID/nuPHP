@@ -5,12 +5,12 @@ use Steampixel\Route;
 define('BASEPATH', BASE_URL);
 
 Route::add('/', function () {
-    Cetak('index');
+    View('index');
 });
 //kostumisasi router silahkan tambahkan disini.
 //mulai kostumisasi router
 Route::add('/halaman', function () {
-    Cetak('home');
+    View('home');
 });
 
 
@@ -35,6 +35,6 @@ Route::add('/(.*)', function ($file) {
 //404 Router 
 Route::pathNotFound(function ($path) {
     header('HTTP/1.0 404 Not Found');
-    Cetak('404');
+    View('404');
 });
 Route::run(BASEPATH);

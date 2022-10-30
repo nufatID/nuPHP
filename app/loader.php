@@ -1,5 +1,8 @@
 <?php
-require_once('core/Database.php');
+
+spl_autoload_register(function ($class) {
+    include 'app/classes/' . $class . '.php';
+});
 require_once('index.php');
 require_once('core/Block.php');
 require_once('core/Template.php');
@@ -13,13 +16,15 @@ function Init($file,  $parms = null)
         require_once('controller/' . $file . '.php');
         if (class_exists($file)) {
             $file = new $file;
-            call_user_func_array(array($file, "index"), array($file));
+            if (method_exists($file, 'index')) {
+                call_user_func_array(array($file, "index"), array($file));
+            }
         }
     } elseif (file_exists('views/' . $file . '.php')) {
         CetakInit($file);
     } else {
         header('HTTP/1.0 404 Not Found');
-        Cetak('404');
+        View('404');
     }
 }
 function InitFolder($file, $folder, $p1 = null, $p2 = null, $p3 = null)
@@ -34,7 +39,7 @@ function InitFolder($file, $folder, $p1 = null, $p2 = null, $p3 = null)
                 $file = 'index';
             } else {
                 header('HTTP/1.0 404 Not Found');
-                Cetak('404');
+                View('404');
             }
             call_user_func_array(array($folder, $file), array($p1, $p2, $p3));
         }
@@ -42,6 +47,6 @@ function InitFolder($file, $folder, $p1 = null, $p2 = null, $p3 = null)
         CetakInitf($file, $folder, $p1, $p2, $p3);
     } else {
         header('HTTP/1.0 404 Not Found');
-        Cetak('404');
+        View('404');
     }
 }

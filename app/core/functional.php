@@ -5,7 +5,7 @@ function getBaseUrl()
     $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
     return $protocol . '://' . $hostName . BASE_URL;
 }
-function Cetak($file, $data = [])
+function View($file, $data = [])
 {
     $theme = new SimpleTemplateEngine\Environment('views');
     echo $theme->render($file . '.php', $data);
