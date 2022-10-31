@@ -1,11 +1,12 @@
 <?php
 
-class Test extends Controller
+class Absensi extends Controller
 {
     public function index($p1, $p2 = null, $p3 = null)
     {
         $data['data'] = $this->model('UserModel');
+        $data['data']->set_pagination(10);
         $data['param'] = $p1;
-        Cetak('new/index', $data);
+        View('absensi/index', $data);
     }
 }

@@ -1,4 +1,4 @@
-<footer class="footer text-center fixed-bottom">
+<footer class="footer text-center">
     <div class="container">
 
         <small class="copyright">NUphp Framework <span class="sr-only">love</span><i class="fas fa-heart"></i> Untuk Pengembangan Website PHP</small>

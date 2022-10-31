@@ -1,5 +1,5 @@
 <?php
 class UserModel extends Database
 {
-    protected $table = 'absensi';
+    protected $table = 'pegawai';
 }

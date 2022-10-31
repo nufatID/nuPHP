@@ -1,5 +1,5 @@
 <?php
-class Database
+class Database extends pagination
 {
     private $host = DB_HOST;
     private $user = DB_USER;
@@ -7,6 +7,8 @@ class Database
     private $db_name = DB_NAME;
     private $dbh;
     private $stmt;
+    public $perPage = 10;
+    public $total_pages;
     public function __construct()
     {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
@@ -67,5 +69,34 @@ class Database
         $this->query('SELECT * FROM ' . $this->table . ' WHERE id=:id');
         $this->bind('id', $id);
         return $this->single();
+    }
+    public function jumlah()
+    {
+        $this->query('SELECT count(*) FROM ' . $this->table);
+        $this->execute();
+        return $this->stmt->fetchColumn();
+    }
+    public function halaman()
+
+    {
+
+        return $this->total_pages;
+    }
+    public function pagination()
+    {
+
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $starting_limit = ($page - 1) * $this->perPage;
+        $this->query("SELECT * FROM $this->table ORDER BY id ASC LIMIT $starting_limit,$this->perPage");
+        return $this->resultSet();
+    }
+    public function set_pagination($p)
+    {
+        $this->perPage = $p;
+        $this->total_pages = ceil($this->jumlah() / $p);
+    }
+    public function no()
+    {
+        return (($_GET["page"] - 1) * $this->perPage) + 1;
     }
 }
