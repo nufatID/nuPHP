@@ -83,6 +83,22 @@ class Database extends pagination
         $this->execute();
         return $this->RowCount();
     }
+    //Ubah CreateDB start
+    public function EditDAta($data, $id)
+    {
+        $list = "";
+        foreach ($data as $key => $val) {
+            $list .=  $key . " = '" . $val . "', ";
+        }
+        $der = substr($list, 0, -2);
+        $q = " UPDATE $this->table SET $der   WHERE id=:id ";
+        $this->query($q);
+        // echo $q;
+
+        $this->bind('id', $id);
+        $this->execute();
+        return $this->RowCount();
+    }
     //ReadDatabase start
     public function getAll()
     {
