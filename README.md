@@ -6,10 +6,10 @@ Designed with  for developers
 
 ## Mulailah membangun website dengan mudah dan cepat!
 
-Gunkan Git Clone [git](https://github.com/nufatID/nuPHP-Framework.git) to install NuPHP Framework.
+Gunkan Git Clone [git](https://github.com/nufatID/nuPHP.git) to install NuPHP Framework.
 
 ```bash
-git clone https://github.com/nufatID/nuPHP-Framework.git
+git clone https://github.com/nufatID/nuPHP.git
 ```
 # USING MVC
 ## Usage Model -> model.php
