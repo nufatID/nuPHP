@@ -9,14 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="<?= getBaseUrl(); ?>/assets/favicon.ico">
-    <script defer src="<?= getBaseUrl(); ?>/assets/fontawesome/js/all.js"></script>
+    <link rel="shortcut icon" href="<?= getBaseUrl(); ?>assets/favicon.ico">
+
     <!-- Global CSS -->
-    <link rel="stylesheet" href="<?= getBaseUrl(); ?>/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= getBaseUrl(); ?>assets/css/bootstrap.min.css">
     <!-- Plugins CSS -->
-    <link rel="stylesheet" href="<?= getBaseUrl(); ?>/assets/plugins/elegant_font/css/style.css">
-    <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="<?= getBaseUrl(); ?>/assets/css/styles.css">
+
+    <link id="theme-style" rel="stylesheet" href="<?= getBaseUrl(); ?>assets/css/styles.css">
 
 </head>
 

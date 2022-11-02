@@ -1,14 +1,13 @@
-<?php $this->extend('layout/layout.php'); ?>
+<?php
+new auth();
 
-
-
-
+$this->extend('layout/layout.php'); ?>
 
 <div class="page-wrapper">
 
     <!-- ******Header****** -->
     <header class="header text-center">
-        <div class="container">
+        <div class="container-fluid">
             <div class="branding">
                 <h1 class="logo">
                     <span aria-hidden="true" class="icon_documents_alt icon"></span>

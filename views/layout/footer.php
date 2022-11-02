@@ -12,9 +12,9 @@
 
 
 
-<script src="<?= getBaseUrl(); ?>/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="<?= getBaseUrl(); ?>/assets/plugins/stickyfill/dist/stickyfill.min.js"></script>
-<script src="<?= getBaseUrl(); ?>/assets/js/main.js"></script>
+<script src="<?= getBaseUrl(); ?>assets/js/bootstrap.min.js"></script>
+
+
 </body>
 
 </html>

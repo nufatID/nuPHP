@@ -2,7 +2,7 @@
 
 use Steampixel\Route;
 
-define('BASEPATH', BASE_URL);
+define('BASEPATH', BASE_DIR);
 
 Route::add('/', function () {
     View('index');

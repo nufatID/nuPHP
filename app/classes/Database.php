@@ -24,7 +24,10 @@ class Database extends pagination
             die($e->getMessage());
         }
     }
-
+    protected function Checklol()
+    {
+        // echo 'wa lol';
+    }
     public function query($q)
     {
         $this->stmt = $this->dbh->prepare($q);
