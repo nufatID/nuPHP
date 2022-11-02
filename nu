@@ -25,7 +25,7 @@ function  run($argv)
                 return $y;
             }
             break;
-        case "Bikin":
+        case "bikin":
             require_once 'zved/Bikin.php';
             $ble = new Bikin;
             $p = (isset($argv[2])) ? $argv[2] : 'err';
@@ -36,8 +36,8 @@ function  run($argv)
             } else {
                 $y = '' . "\n";
                 $y .= '---------------------------------------------------' . "\n";
-                $y .= 'silahkan masukan nama controller :' . "\n";
-                $y .= 'php nu buat namafile    ---> untuk buat file' . "\n";
+                $y .= 'silahkan masukan nama view :' . "\n";
+                $y .= 'php nu bikin namafile    ---> untuk buat file view' . "\n";
                 $y .= '---------------------------------------------------' . "\n";
                 return $y;
             }
