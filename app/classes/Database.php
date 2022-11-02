@@ -9,6 +9,7 @@ class Database extends pagination
     private $stmt;
     public $perPage = 10;
     public $total_pages;
+    public $databasecek;
 
 
     public function __construct()
@@ -21,6 +22,7 @@ class Database extends pagination
         try {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         } catch (PDOException $e) {
+            $this->databasecek = 'Tidak terhubung';
             die($e->getMessage());
         }
     }

@@ -6,7 +6,7 @@ define('BASE_DIR', '/');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'absensi');
+define('DB_NAME', 'nuPHP');
 
 //Auth System
 
