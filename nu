@@ -25,6 +25,23 @@ function  run($argv)
                 return $y;
             }
             break;
+        case "Bikin":
+            require_once 'zved/Bikin.php';
+            $ble = new Bikin;
+            $p = (isset($argv[2])) ? $argv[2] : 'err';
+            $p1 = (isset($argv[3])) ? $argv[3] : null;
+            $p2 = (isset($argv[4])) ? $argv[4] : null;
+            if ($p != 'err') {
+                return $ble->index($p, $p1, $p2);
+            } else {
+                $y = '' . "\n";
+                $y .= '---------------------------------------------------' . "\n";
+                $y .= 'silahkan masukan nama controller :' . "\n";
+                $y .= 'php nu buat namafile    ---> untuk buat file' . "\n";
+                $y .= '---------------------------------------------------' . "\n";
+                return $y;
+            }
+            break;
         case "serve1":
             return shell_exec('php -S localhost:8006 -t .');
             break;

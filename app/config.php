@@ -10,4 +10,4 @@ define('DB_NAME', 'absensi');
 
 //Auth System
 
-define('AUTH', true);
+define('AUTH', false);
