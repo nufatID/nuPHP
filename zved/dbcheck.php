@@ -2,15 +2,13 @@
 include 'app/config.php';
 class DbCheck
 {
-    private $host = DB_HOST;
-    private $user = DB_USER;
-    private $pass = DB_PASS;
-    private $db_name = DB_NAME;
-    private $dbh;
-    private $stmt;
-    private $databasecek;
-
-
+    protected $host = DB_HOST;
+    protected $user = DB_USER;
+    protected $pass = DB_PASS;
+    protected $db_name = DB_NAME;
+    protected $dbh;
+    protected $stmt;
+    protected $databasecek;
     public function __construct()
     {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
@@ -22,7 +20,6 @@ class DbCheck
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         } catch (PDOException $e) {
             $this->databasecek = $e->getMessage();
-            // die($e->getMessage());
         }
     }
     public function Index()
@@ -45,17 +42,15 @@ class DbCheck
     }
     public function fix()
     {
-        $conn = mysqli_connect($this->host, $this->user, $this->pass);
-
-        $sql = "CREATE DATABASE " . $this->db_name;
-        if (mysqli_query($conn, $sql)) {
-            // echo "Database created successfully";
+        if (isset($this->databasecek)) {
+            $conn = mysqli_connect($this->host, $this->user, $this->pass);
+            $sql = "CREATE DATABASE " . $this->db_name;
+            if (mysqli_query($conn, $sql)) {
+                return shell_exec('php nu dbcheck');
+            }
+            mysqli_close($conn);
         } else {
-            // echo "Error creating database: " . mysqli_error($conn);
+            return shell_exec('php nu dbcheck');
         }
-
-        mysqli_close($conn);
-
-        return shell_exec('php nu dbcheck');;
     }
 }

@@ -82,6 +82,10 @@ function  run($argv)
                 $y .= '' . "\n";
                 $y .= 'php nu serve         ---> untuk run server' . "\n";
                 $y .= 'php nu buat namafile    ---> untuk buat file' . "\n";
+                $y .= 'php nu dbcheck    ---> untuk cek koneksi database' . "\n";
+                $y .= 'php nu dbcheck fix    ---> untuk membuat database' . "\n";
+                $y .= 'php nu auth    ---> untuk check sytem auth' . "\n";
+                $y .= 'php nu auth sett    ---> untuk setting table auth di database' . "\n";
                 $y .= '' . "\n";
                 $y .= '' . "\n";
                 $y .= '' . "\n";
