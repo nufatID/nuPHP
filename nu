@@ -1,6 +1,6 @@
 #!/usr/bin/php php
 <?php
-
+require_once 'vendor/zved/Help.php';
 print_r(run($argv));
 function  run($argv)
 {
@@ -10,49 +10,25 @@ function  run($argv)
                 shell_exec('php -S localhost:8005 -t .');
                 break;
             case "buat":
+                return Help::onp();
+                exit();
                 require_once 'vendor/zved/Buat.php';
-                $ble = new Buat;
-                $p = (isset($argv[2])) ? $argv[2] : 'err';
-                $p1 = (isset($argv[3])) ? $argv[3] : null;
-                $p2 = (isset($argv[4])) ? $argv[4] : null;
-                if ($p != 'err') {
-                    return $ble->index($p, $p1, $p2);
-                } else {
-                    $y = '' . "\n";
-                    $y .= '---------------------------------------------------' . "\n";
-                    $y .= 'silahkan masukan nama controller :' . "\n";
-                    $y .= 'php nu buat namafile    ---> untuk buat file' . "\n";
-                    $y .= '---------------------------------------------------' . "\n";
-                    return $y;
-                }
-                break;
-            case "bikin":
-                require_once 'vendor/zved/Bikin.php';
-                $ble = new Bikin;
-                $p = (isset($argv[2])) ? $argv[2] : 'err';
-                $p1 = (isset($argv[3])) ? $argv[3] : 'null';
-                if (method_exists($ble, $p1)) {
-                    if ($p != 'err') {
-                        return $ble->index($p, $p1);
+                $buat = new Buat;
+                $method = (isset($argv[2])) ? $argv[2] : 'error atau';
+                $nama = (isset($argv[3])) ? $argv[3] : 'err';
+                $p1 = (isset($argv[4])) ? $argv[4] : null;
+                $p2 = (isset($argv[5])) ? $argv[5] : null;
+                $p3 = (isset($argv[6])) ? $argv[6] : null;
+                $p4 = (isset($argv[7])) ? $argv[7] : null;
+
+                if (method_exists($buat, $method)) {
+                    if ($nama != 'err') {
+                        return $buat->index($method, $nama, $p1, $p2, $p3, $p4);
                     } else {
-                        $y = '' . "\n";
-                        $y .= '---------------------------------------------------' . "\n";
-                        $y .= 'gagal...!!!' . "\n";
-                        $y .= 'silahkan masukan nama view :' . "\n";
-                        $y .= 'php nu bikin namafile methode   ---> untuk buat file view' . "\n";
-                        $y .= '---------------------------------------------------' . "\n";
-                        return $y;
+                        return Help::buatco();
                     }
                 } else {
-                    $y = '' . "\n";
-                    $y .= '---------------------------------------------------' . "\n";
-                    $y .= 'gagal...!!!' . "\n";
-                    $y .= 'silahkan masukan nama view :' . "\n";
-                    $y .= 'php nu bikin namafile methode' . "\n";
-                    $y .= ' methode list --->' . "\n";
-                    $y .= '           1. html' . "\n";
-                    $y .= '---------------------------------------------------' . "\n";
-                    return $y;
+                    return Help::buat($method);
                 }
                 break;
             case "ksweb":
@@ -76,49 +52,10 @@ function  run($argv)
                         return $ble->index();
                     }
                 } else {
-                    $y = '' . "\n";
-                    $y .= '------------------------------------------' . "\n";
-                    $y .= 'daftar command yang tersedia untuk nuphp :' . "\n";
-                    $y .= '------------------------------------------' . "\n";
-                    $y .= '' . "\n";
-                    $y .= 'php nu serve     ---> untuk run server' . "\n";
-                    $y .= 'php nu buat namafile    ---> untuk buat file' . "\n";
-                    $y .= 'php nu dbcheck    ---> untuk cek koneksi database' . "\n";
-                    $y .= 'php nu dbcheck fix    ---> untuk membuat database' . "\n";
-                    $y .= 'php nu auth ---> untuk check sytem auth' . "\n";
-                    $y .= 'php nu auth sett    ---> untuk setting table auth' . "\n";
-                    $y .= '' . "\n";
-                    $y .= '' . "\n";
-                    $y .= '' . "\n";
-                    $y .= 'silahkan coba perintah' . "\n";
-
-                    return $y;
+                    return Help::Index();
                 }
         }
     } else {
-        $y = '' . "\n";
-        $y .= 'Nuphp adalah sebuah framework php' . "\n";
-        $y .= 'yang memudahkan kita untuk mebuat website' . "\n";
-        $y .= 'dengan bahasa pemograman php' . "\n";
-        $y .= 'dengan konsep MVC maupun NonMVC' . "\n";
-        $y .= 'dan juga konsep OOP atau Prosedural' . "\n";
-        $y .= '' . "\n";
-        $y .= '' . "\n";
-        $y .= '--------------------------------------------' . "\n";
-        $y .= 'daftar command yang tersedia untuk nuphp :' . "\n";
-        $y .= '--------------------------------------------' . "\n";
-        $y .= '| php nu serve |---> untuk run server' . "\n";
-        $y .= '| php nu buat namafile |---> untuk buat file' . "\n";
-        $y .= '| php nu dbcheck |---> untuk cek koneksi database' . "\n";
-        $y .= '| php nu dbcheck fix |---> untuk membuat database' . "\n";
-        $y .= '| php nu auth |---> untuk check sytem auth' . "\n";
-        $y .= '| php nu auth sett |---> untuk setting table auth ' . "\n";
-        $y .= '' . "\n";
-        $y .= '' . "\n";
-        $y .= '' . "\n";
-        $y .= 'silahkan coba perintah diatas' . "\n";
-        $y .= '' . "\n";
-        $y .= '' . "\n";
-        return $y;
+        return Help::Index();
     }
 }

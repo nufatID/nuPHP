@@ -1,16 +1,11 @@
 <?php
-class Bikin
+class View
 {
-    public function Index($pa = 'page', $pa1 = null)
-    {
-        $html =  $this->$pa1($pa);
-        file_put_contents('views/' . $pa . '.php', $html);
 
-        $y = '---------------------------------------------------' . "\n";
-        $y .= 'views/' . $pa . '.php --> telah dibuat.' . "\n";
-        $y .= 'php nu serve dan lihat di http://localhost:8005/' . $pa . '   ---<' . "\n";
-        $y .= '---------------------------------------------------' . "\n";
-        return $y;
+    public function generate($pa = 'page', $pa1 = null)
+    {
+        $y = '<?php $this->extend("layout/layout.php"); ?>';
+        file_put_contents('views/' . $pa . '.php', $y);
     }
     public function html($q)
     {
@@ -34,7 +29,11 @@ class Bikin
     }
     public function layout($q)
     {
-        $y = '<?php $this->extend("layout/layout.php"); ?>';
+
         return $y;
+    }
+    public function Index()
+    {
+        return Help::Index();
     }
 }
