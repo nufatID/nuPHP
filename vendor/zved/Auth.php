@@ -1,5 +1,5 @@
 <?php
-include 'zved/dbcheck.php';
+include 'vendor/zved/dbcheck.php';
 class Auth extends DbCheck
 {
     public function Index()
@@ -35,7 +35,7 @@ class Auth extends DbCheck
     {
         $conn = new mysqli($this->host, $this->user, $this->pass, $this->db_name);
         $query = '';
-        $sqlScript = file('zved/db.sql');
+        $sqlScript = file('vendor/zved/db.sql');
         foreach ($sqlScript as $line) {
 
             $startWith = substr(trim($line), 0, 2);
