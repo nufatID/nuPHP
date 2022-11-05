@@ -16,5 +16,5 @@
       "email": "admin@nufat.id"
     }
   ],
-  "minimum-stability": "stable"
+  "minimum-stability": "dev"
 }
