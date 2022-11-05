@@ -16,6 +16,7 @@ function CetakInit($file)
     $modelna->set($file);
     $theme = new SimpleTemplateEngine\Environment('views');
     $data['data'] = $modelna;
+    $data['old']  = Oldata::get();
     echo $theme->render($file . '.php', $data);
 }
 function CetakInitf($file, $folder, $p1 = null, $p2 = null, $p3 = null)
@@ -28,5 +29,6 @@ function CetakInitf($file, $folder, $p1 = null, $p2 = null, $p3 = null)
     $data['p2'] = $p2;
     $data['p3'] = $p3;
     $data['get']  = $_GET;
+    $data['old']  = Oldata::get();
     echo $theme->render($folder . '/' . $file . '.php', $data);
 }

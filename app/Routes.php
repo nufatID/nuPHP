@@ -9,7 +9,7 @@ Route::add('/', function () {
 });
 //kostumisasi router silahkan tambahkan disini.
 //mulai kostumisasi router
-Route::add('/halaman', function () {
+Route::add('/home', function () {
     View('home');
 });
 

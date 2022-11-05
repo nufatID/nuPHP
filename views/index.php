@@ -1,5 +1,5 @@
 <?php
-new auth();
+$auth = new Auth();
 
 $this->extend('layout/layout.php'); ?>
 

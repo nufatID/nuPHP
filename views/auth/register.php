@@ -1,5 +1,7 @@
 <?php
-new Auth(false);
+
+$auth = new Auth(false);
+
 if (isset($_SESSION['login'])) {
     header("location: " . getBaseUrl());
     exit();
@@ -28,22 +30,24 @@ if (isset($_SESSION['login'])) {
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="card-body">
-                                <h4 class="mb-3 f-w-400">Login</h4>
+                                <h4 class="mb-3 f-w-400">Register</h4>
                                 <hr>
                                 <?php Alert::show(); ?>
-                                <form method="POST" action="<?= getBaseUrl(); ?>auth/login">
+                                <form method="POST" action="<?= getBaseUrl(); ?>auth/register">
                                     <div class="form-group mb-3">
                                         <input type="text" class="form-control" id="Email" placeholder="Username" name="username" value="<?= (isset($old['username'])) ? $old['username'] : ''; ?>" autocomplete="off" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input type="email" class="form-control" id="Email" placeholder="Email" name="email" value="<?= (isset($old['email'])) ? $old['email'] : ''; ?>" autocomplete="off" required>
                                     </div>
                                     <div class="form-group mb-4">
                                         <input type="password" class="form-control" id="Password" placeholder="Password" name="password" required>
                                     </div>
-                                    <input type="hidden" name="auth_login" value="<?= Csrf::get(); ?>">
-                                    <button type="submit" class="btn btn-block btn-primary mb-4">Login</button>
+                                    <input type="hidden" name="auth_register" value="<?= Csrf::get(); ?>">
+                                    <button type="submit" class="btn btn-block btn-primary mb-4">Register</button>
                                 </form>
                                 <hr>
-                                <p class="mb-2 text-muted">Lupa Pasword? <a href="auth-reset-password.html" class="f-w-400">Reset</a></p>
-                                <p class="mb-0 text-muted">Daftar Akun ? <a href="<?= getBaseUrl(); ?>auth/register" class="f-w-400">Signup</a></p>
+
                             </div>
                         </div>
                     </div>

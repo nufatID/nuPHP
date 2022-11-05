@@ -31,9 +31,7 @@ function  run($argv)
                     return Help::buat($method);
                 }
                 break;
-            case "ksweb":
-                return shell_exec('-S localhost:8006 -t .');
-                break;
+
             case "serve2":
                 return shell_exec('php -S localhost:8006 -t .');
                 break;
@@ -42,7 +40,9 @@ function  run($argv)
                 break;
             default:
                 if (file_exists('vendor/zved/' . $argv[1] . '.php')) {
-                    require_once 'vendor/zved/' . $argv[1] . '.php';
+                    if ($argv[1] != 'help') {
+                        require_once 'vendor/zved/' . $argv[1] . '.php';
+                    }
                     $ble = new $argv[1];
                     if (isset($argv[2])) {
                         $bk = $argv[2];

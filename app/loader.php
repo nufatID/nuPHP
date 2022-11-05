@@ -9,10 +9,10 @@ require_once('core/Template.php');
 require_once('core/Environment.php');
 require_once('core/functional.php');
 
-
+Csrf::start();
 function Init($file,  $parms = null)
 {
-    $auth = new Auth;
+
     if (file_exists('app/controller/' . $file . '.php')) {
         require_once('controller/' . $file . '.php');
         if (class_exists($file)) {
@@ -30,7 +30,7 @@ function Init($file,  $parms = null)
 }
 function InitFolder($file, $folder, $p1 = null, $p2 = null, $p3 = null)
 {
-    $auth = new Auth;
+
     if (file_exists('app/controller/' . $folder . '.php')) {
         require_once('controller/' . $folder . '.php');
         if (class_exists($folder)) {

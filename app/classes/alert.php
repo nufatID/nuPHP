@@ -1,9 +1,18 @@
 <?php
 class Alert
 {
-    public static function error($c, $m)
+    public static function SetAlert($a, $b)
     {
-        $pass = '<div class="alert alert-' . $c . '" role="alert">' . $m . '</div>';
-        return $pass;
+        $_SESSION['alert'] = [
+            'type' => $a,
+            'pesan' => $b,
+        ];
+    }
+    public static function show()
+    {
+        if (isset($_SESSION['alert'])) {
+            echo '<div class="alert alert-' . $_SESSION['alert']['type'] . '" role="alert">' . $_SESSION['alert']['pesan'] . '</div>';
+        }
+        unset($_SESSION['alert']);
     }
 }

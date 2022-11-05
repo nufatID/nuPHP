@@ -17,26 +17,6 @@ class Absensi extends Controller
         $data['data'] = $model;
         View('absensi/index', $data);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function detail($p1)
     {
         $model = $this->model('UserModel');
