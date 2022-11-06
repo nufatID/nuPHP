@@ -10,4 +10,4 @@ define('DB_NAME', 'nuPHP');
 
 //Auth System
 
-define('AUTH', false);
+define('AUTH', true);

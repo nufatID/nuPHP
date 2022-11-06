@@ -10,8 +10,6 @@ class Database extends pagination
     public $perPage = 10;
     public $total_pages;
     public $databasecek;
-
-
     public function __construct()
     {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
@@ -26,15 +24,10 @@ class Database extends pagination
             die($e->getMessage());
         }
     }
-    protected function Checklol()
-    {
-        // echo 'wa lol';
-    }
     public function query($q)
     {
         $this->stmt = $this->dbh->prepare($q);
     }
-
     public function bind($param, $value, $type = null)
     {
         if (is_null($type)) {

@@ -6,6 +6,7 @@
     <a href="<?= getBaseUrl(); ?>absensi/insert" class="btn btn-primary">tambah</a>
     <div class="row m-2">
         <div class="col-sm-4 mx-auto text-center">
+            <?= Alert::show(); ?>
             <?= $data->pagelist(); ?></div>
 
     </div>

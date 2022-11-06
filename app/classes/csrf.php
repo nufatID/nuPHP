@@ -11,6 +11,6 @@ class Csrf
     public static function get()
     {
 
-        return $_SESSION['token_csrf'] = bin2hex(random_bytes(23));
+        return $_SESSION['token_csrf'];
     }
 }
