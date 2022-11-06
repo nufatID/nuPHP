@@ -2,16 +2,28 @@
 
 Bootstrap 5 dan PHP untuk membuat website dengan cepat dan mudah
 
-Designed with  for developers
+Designed with for developers
 
-## Mulailah membangun website dengan mudah dan cepat!
+# CARA INSTALL NUPHP
+
+## Install dengan COMPOSER Mulailah membangun website dengan mudah dan cepat!
+
+Gunkan [COMMPOSER](https://getcomposer.org/) to install NuPHP Framework.
+
+```bash
+composer create-project nufat/nuphp
+```
+
+## Install dengan GIT Mulailah membangun website dengan mudah dan cepat!
 
 Gunkan Git Clone [git](https://github.com/nufatID/nuPHP.git) to install NuPHP Framework.
 
 ```bash
 git clone https://github.com/nufatID/nuPHP.git
 ```
+
 # USING MVC
+
 ## Usage Model -> model.php
 
 ```php
@@ -47,6 +59,7 @@ class UserModel extends Database
     </div>
 </div>
 ```
+
 ## Usage Controller -> Controler.php
 
 ```php
@@ -71,7 +84,9 @@ class Absensi extends Controller
     }
 }
 ```
+
 # USING NON MVC
+
 ## Usage Model -> model.php
 
 ```php
@@ -108,7 +123,9 @@ class Absensi extends Controller
 
 </div>
 ```
+
 # USING Auto Routes or Setting Kostum
+
 ## Usage Routes.php
 
 ```php
@@ -129,7 +146,7 @@ Route::add('/halaman', function () {
 
 
 //end kostumisasi router
-//Auto Router 
+//Auto Router
 Route::add('/(.*)/(.*)/(.*)/(.*)/(.*)', function ($folder, $file, $p1, $p2, $p3) {
     InitFolder($file, $folder, $p1, $p2, $p3);
 }, ['get', 'post']);
@@ -146,7 +163,7 @@ Route::add('/(.*)', function ($file) {
     Init($file);
 }, ['get', 'post']);
 
-//404 Router 
+//404 Router
 Route::pathNotFound(function ($path) {
     header('HTTP/1.0 404 Not Found');
     View('404');
@@ -156,12 +173,15 @@ Route::run(BASEPATH);
 ```
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
 ## Kunjungi
+
 [https://webdev.nufat.id/](https://webdev.nufat.id/)
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)
