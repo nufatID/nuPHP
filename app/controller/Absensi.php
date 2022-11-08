@@ -5,7 +5,6 @@ class Absensi extends Controller
     public $auth = false;
     public function index()
     {
-
         $model = $this->model('UserModel');
         $model->set_pagination(5);
         $model->jarak = 3;

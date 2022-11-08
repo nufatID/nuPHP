@@ -137,6 +137,19 @@ class Database extends pagination
         $page = (is_numeric($page)) ? $page : 1;
         return $page;
     }
+    public function search($data)
+    {
+        $list = "";
+        foreach ($data as $val) {
+            $list .=  $val . " LIKE :keyword OR ";
+        }
+        $der = substr($list, 0, -3);
+        $q = (isset($_POST['q'])) ? $_POST['q'] : $_GET['q'];
+        $this->query("SELECT * FROM $this->table WHERE $der ");
+        $this->bind('keyword', "%$q%");
+        return $this->resultSet();
+    }
+
     public function pagination()
     {
 
