@@ -9,5 +9,8 @@ define('DB_PASS', '');
 define('DB_NAME', 'nuPHP');
 
 //Auth System
-
 define('AUTH', false);
+
+//version
+define('APP_VERSION', '1.0.0');
+define('NUPHP', '1.0.5');

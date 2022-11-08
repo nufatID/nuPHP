@@ -5,6 +5,14 @@ function getBaseUrl()
     $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
     return $protocol . '://' . $hostName . BASE_DIR;
 }
+function getVersion()
+{
+    return NUPHP;
+}
+function getAppVersion()
+{
+    return APP_VERSION;
+}
 function View($file, $data = [])
 {
     $theme = new SimpleTemplateEngine\Environment('views');
