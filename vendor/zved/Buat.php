@@ -7,9 +7,6 @@ class Buat
         $cont,
         $model,
         $folder;
-
-
-
     public function Index($method, $nama, $p1, $p2, $p3, $p4)
     {
         $this->checknama($nama);
@@ -26,7 +23,8 @@ class Buat
                 $this->view();
                 break;
             case "c":
-                $this->cont();
+                $this->cont = true;
+                $this->controller();
                 break;
             case "t":
                 $this->table();
@@ -37,24 +35,34 @@ class Buat
             case "view":
                 $this->view();
                 break;
-            case "cont":
-                $this->cont();
+            case "controller":
+                $this->cont = true;
+                $this->controller();
                 break;
             case "table":
                 $this->table();
                 break;
-
             default:
         }
-        return 'methode     : ' . $this->methode . "\n" .
-            '-- nama    : ' . $this->nama . "\n" .
-            '-- contr   : ' . $this->cont . "\n" .
-            '-- view    : ' . $this->view . "\n" .
-            '-- model   : ' . $this->model . "\n" .
-            '-- table   : ' . $this->table . '';
+        $yu =  ' ' . "\n";
+
+        if ($this->cont) {
+            $yu .= 'Controler telah dibuat' . "\n";
+        }
+        if ($this->view) {
+            $yu .=   'view telah dibuat' . "\n";
+        }
+        if ($this->model) {
+            $yu .=   $this->nama . 'Model telah dibuat' . "\n";
+        }
+        if ($this->table) {
+            $yu .= 'Tabel database dibuat' . "\n";
+        }
+        return $yu;
     }
     private function checknama($too)
     {
+        $this->nama = $too;
     }
     private function check($t)
     {
@@ -77,16 +85,60 @@ class Buat
     }
     public function model()
     {
-        $this->model = 'siap dijalankan';
+        $y = "<?php" . "\n";
+        $y .= "class " . $this->nama . "Model extends Database" . "\n";
+        $y .= "{" . "\n";
+        $y .= '     protected $table = "' . $this->nama . '";' . "\n";
+        $y .= "}" . "\n";
+        file_put_contents('app/models/' . $this->nama . 'Model.php', $y);
     }
     public function view()
     {
         $y = '<?php $this->extend("layout/layout.php"); ?>';
         file_put_contents('views/' . $this->nama . '.php', $y);
     }
-    public function cont()
+    public function viewfc()
     {
-        $this->cont = 'siap dijalankan';
+        $irectory = "views/" . $this->nama;
+        if (is_dir($irectory)) {
+        } else {
+            mkdir("views/" . $this->nama, 0770, true);
+        }
+        $y = '<?php $this->extend("layout/layout.php"); ?>';
+        file_put_contents('views/' . $this->nama . '/index.php', $y);
+    }
+
+    public function modelfc()
+    {
+        $y = "<?php" . "\n";
+        $y .= "class " . $this->nama . "Model extends Database" . "\n";
+        $y .= "{" . "\n";
+        $y .= '     protected $table = "' . $this->nama . '";' . "\n";
+        $y .= "}" . "\n";
+        file_put_contents('app/models/' . $this->nama . 'Model.php', $y);
+    }
+    public function controller()
+    {
+        $y = "<?php" . "\n";
+        $y .= "class $this->nama extends Controller" . "\n";
+        $y .= "{" . "\n";
+        $y .= "     public function index()" . "\n";
+        $y .= "     {" . "\n";
+        $y .= " " . "\n";
+        if ($this->model) {
+            $this->modelfc();
+            $y .= '         $model = $this->model("' . $this->nama . 'Model");' . "\n";
+            $y .= '         $data["data"] = $model;' . "\n";
+            $y .= " " . "\n";
+        }
+        if ($this->view) {
+            $this->viewfc();
+            $y .= '          View("' . $this->nama . '/index", $data);' . "\n";
+            $y .= " " . "\n";
+        }
+        $y .= "     }" . "\n";
+        $y .= "}" . "\n";
+        file_put_contents('app/controller/' . $this->nama . '.php', $y);
     }
     public function table()
     {

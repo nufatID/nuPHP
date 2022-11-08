@@ -38,7 +38,7 @@ $$ |  $$ \$$$$$$  $$ |     $$ |  $$ $$ |
         $y .= 'silahkan masukan nama metode :' . "\n";
         $y .= ' m | model  --> untuk membuat model' . "\n";
         $y .= ' v | view  --> untuk membuat view' . "\n";
-        $y .= ' c | cont  --> untuk membuat controller' . "\n";
+        $y .= ' c | controller  --> untuk membuat controller' . "\n";
         $y .= ' t | table  --> untuk membuat tabel database' . "\n";
         $y .= '---------------------------------------------------' . "\n";
         $y .= ' contoh : php nu buat cont namaControler m v t' . "\n";

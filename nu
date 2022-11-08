@@ -10,8 +10,8 @@ function  run($argv)
                 shell_exec('php -S localhost:8005 -t .');
                 break;
             case "buat":
-                return Help::onp();
-                exit();
+                // return Help::onp();
+                // exit();
                 require_once 'vendor/zved/Buat.php';
                 $buat = new Buat;
                 $method = (isset($argv[2])) ? $argv[2] : 'error atau';
