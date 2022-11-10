@@ -1,4 +1,7 @@
 <?php
+
+//base URL gunakan hanya / jika project berada di root
+define('BASE_URL', 'http://localhost:8005');
 //base URL gunakan hanya / jika project berada di root
 define('BASE_DIR', '/');
 
