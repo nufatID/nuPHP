@@ -103,7 +103,11 @@ class Database extends pagination
         $this->query('SELECT * FROM ' . $this->table);
         return $this->resultSet();
     }
-
+    public function where($id)
+    {
+        $this->query('SELECT * FROM ' . $this->table . ' WHERE ' . $id . ' ');
+        return $this->resultSet();
+    }
     public function getbyId($id)
     {
         $this->query('SELECT * FROM ' . $this->table . ' WHERE id=:id');
