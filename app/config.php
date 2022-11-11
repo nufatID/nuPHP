@@ -18,7 +18,7 @@ define('AUTH', false);
 define('SMTP_HOST', 'nufat.id');
 define('EMAIL_NAMA', 'WEBDEV');
 define('EMAIL_ADR', 'webdev@nufat.id');
-define('EMAIL_PASS', 'nufat.id:17');
+define('EMAIL_PASS', '');
 
 //version
 define('APP_VERSION', '1.0.0');
