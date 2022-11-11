@@ -1,5 +1,5 @@
 <?php
-class Database extends pagination
+class Database extends Pagination
 {
     private $host = DB_HOST;
     private $user = DB_USER;
