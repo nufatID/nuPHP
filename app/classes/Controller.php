@@ -17,4 +17,9 @@ class Controller
         require_once 'app/models/' . $m . '.php';
         return new $m;
     }
+    public function cont($m)
+    {
+        require_once 'app/controller/' . $m . '.php';
+        return new $m;
+    }
 }

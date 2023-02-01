@@ -10,6 +10,7 @@ class Database extends Pagination
     public $perPage = 10;
     public $total_pages;
     public $databasecek;
+    public $ordernya = "ASC";
     public function __construct()
     {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
@@ -100,7 +101,7 @@ class Database extends Pagination
     //ReadDatabase start
     public function getAll()
     {
-        $this->query('SELECT * FROM ' . $this->table);
+        $this->query('SELECT * FROM ' . $this->table . ' ORDER BY id ' . $this->ordernya);
         return $this->resultSet();
     }
     public function where($id)
@@ -160,7 +161,7 @@ class Database extends Pagination
         $page = $this->CekNumeric();
         $page = ($page > $this->halaman()) ? 1 : $page;
         $starting_limit = ($page - 1) * $this->perPage;
-        $this->query("SELECT * FROM $this->table ORDER BY id ASC LIMIT $starting_limit,$this->perPage");
+        $this->query("SELECT * FROM $this->table ORDER BY id $this->ordernya LIMIT $starting_limit,$this->perPage");
         return $this->resultSet();
     }
 

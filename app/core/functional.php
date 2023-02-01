@@ -38,3 +38,23 @@ function CetakInitf($file, $folder, $p1 = null, $p2 = null, $p3 = null)
     $data['old']  = Oldata::get();
     echo $theme->render($folder . '/' . $file . '.php', $data);
 }
+
+function response($status,  $data)
+{
+    header("Content-Type:application/json");
+    header("HTTP/1.1 " . $status);
+    $response['data'] = $data;
+    $json_response = json_encode($data);
+    echo $data;
+}
+
+function textToSlug($text = '')
+{
+    $text = trim($text);
+    if (empty($text)) return '';
+    $text = preg_replace("/[^a-zA-Z0-9\-\s]+/", "", $text);
+    $text = strtolower(trim($text));
+    $text = str_replace(' ', '-', $text);
+    $text = $text_ori = preg_replace('/\-{2,}/', '-', $text);
+    return $text;
+}

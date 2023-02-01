@@ -8,6 +8,7 @@ class Absensi extends Controller
         $model = $this->model('UserModel');
         $model->set_pagination(5);
         $model->jarak = 3;
+        $model->ordernya = "DESC";
         $adrow = [
             "Detail" => "<a href='" . getBaseUrl() . "absensi/detail/{{id}}' class='btn btn-primary' id='{{id}}'>Detail</a>",
             "Edit" => "<a href='" . getBaseUrl() . "absensi/edit/{{id}}' type='button' class='btn btn-warning'>Edit</a>",
@@ -19,7 +20,7 @@ class Absensi extends Controller
     }
     public function detail($p1)
     {
-        $this->auth(true);
+        // $this->auth(true);
         $model = $this->model('UserModel');
         $user = $model->getbyId($p1);
         $data['data'] = $user;
@@ -27,7 +28,7 @@ class Absensi extends Controller
     }
     public function insert($p1)
     {
-        $this->auth(true);
+        // $this->auth(true);
         $model = $this->model('UserModel');
         if (isset($_POST["pegawai_nama"])) {
             $data['row'] =  $model->AddDAta($_POST);
