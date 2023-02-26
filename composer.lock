@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd1e0721a8e54fc626b554a40901220a",
+    "content-hash": "688de6f8d047ffbf5422410a8cb2e910",
     "packages": [
+        {
+            "name": "sergeytsalkov/meekrodb",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SergeyTsalkov/meekrodb.git",
+                "reference": "0f678b72225a0bb2557b7cd54e0f39a7cdb8b5fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SergeyTsalkov/meekrodb/zipball/0f678b72225a0bb2557b7cd54e0f39a7cdb8b5fd",
+                "reference": "0f678b72225a0bb2557b7cd54e0f39a7cdb8b5fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "db.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Tsalkov",
+                    "email": "stsalkov@gmail.com"
+                }
+            ],
+            "description": "The Simple PHP/MySQL Library",
+            "homepage": "http://www.meekro.com",
+            "keywords": [
+                "database",
+                "mysql",
+                "mysqli",
+                "pdo"
+            ],
+            "support": {
+                "email": "support@meekro.com",
+                "issues": "https://github.com/SergeyTsalkov/meekrodb/issues",
+                "source": "https://github.com/SergeyTsalkov/meekrodb/tree/master"
+            },
+            "time": "2022-11-06T18:10:02+00:00"
+        },
         {
             "name": "steampixel/simple-php-router",
             "version": "0.7.1",
@@ -52,8 +101,10 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "sergeytsalkov/meekrodb": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

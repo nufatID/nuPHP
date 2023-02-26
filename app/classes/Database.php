@@ -13,6 +13,10 @@ class Database extends Pagination
     public $ordernya = "ASC";
     public function __construct()
     {
+        DB::$user = DB_USER;
+        DB::$password = DB_PASS;
+        DB::$dbName = DB_NAME;
+
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
         $options = [
             PDO::ATTR_PERSISTENT => true,

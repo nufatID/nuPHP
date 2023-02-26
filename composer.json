@@ -6,7 +6,8 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "steampixel/simple-php-router": "^0.7.1"
+        "steampixel/simple-php-router": "^0.7.1",
+          "sergeytsalkov/meekrodb": "dev-master"
     },
     
     "authors": [
