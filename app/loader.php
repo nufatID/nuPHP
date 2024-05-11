@@ -3,7 +3,7 @@
 spl_autoload_register(function ($class) {
     include  __DIR__ . '/classes/' . $class . '.php';
 });
-require_once(__DIR__ . '/Index.php');
+require_once(__DIR__ . '/index.php');
 require_once('core/Block.php');
 require_once('core/Template.php');
 require_once('core/Environment.php');
