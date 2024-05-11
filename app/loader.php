@@ -1,13 +1,28 @@
 <?php
 
+use Jenssegers\Blade\Blade;
+
+
 spl_autoload_register(function ($class) {
     include  __DIR__ . '/classes/' . $class . '.php';
 });
-require_once(__DIR__ . '/index.php');
+
+require_once(__DIR__ . '/Index.php');
 require_once('core/Block.php');
 require_once('core/Template.php');
 require_once('core/Environment.php');
 require_once('core/functional.php');
+require_once(__DIR__ . '/Connection.php');
+
+function Views($file, $data = [])
+{
+    $views = __DIR__ . '/views'; // Direktori untuk file template blade
+    $cache = __DIR__ . '/cache'; // Direktori untuk file cache blade
+    $blade = new Blade($views, $cache);
+    echo $blade->make($file, $data);
+}
+
+
 
 Csrf::start();
 function Init($file,  $parms = null)
