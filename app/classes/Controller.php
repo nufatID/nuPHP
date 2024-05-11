@@ -4,6 +4,9 @@ class Controller
 
     public function __construct()
     {
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $_SESSION['oldpage'] = $_SERVER['REQUEST_URI'];
+        }
         if (isset($this->auth)) {
             $this->auth($this->auth);
         }

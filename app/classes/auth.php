@@ -11,8 +11,16 @@ class Auth
     public $auth = AUTH;
     protected $login;
     protected $table = 'users';
+    protected $Mdb;
     public function __construct($re = null)
     {
+        $this->Mdb = new Medoo([
+            'database_type' => 'mysql',
+            'database_name' => 'nama_database',
+            'server' => 'localhost',
+            'username' => 'username',
+            'password' => 'password'
+        ]);
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
         $options = [
             PDO::ATTR_PERSISTENT => true,
@@ -156,7 +164,14 @@ class Auth
                 $_SESSION['token_login'] = $token;
                 $_COOKIE['token_login'] = $token;
                 $this->recordlog($token, $d['id']);
-                header("location: " . getBaseUrl());
+
+                if (isset($_SESSION['oldpage'])) {
+                    // jika ada session oldpage, arahkan pengguna ke halaman tersebut
+                    header("Location: " . $_SESSION['oldpage']);
+                } else {
+                    // jika tidak ada session oldpage, arahkan pengguna ke halaman home
+                    header("location: " . getBaseUrl());
+                }
             } else {
 
                 $this->backto();
@@ -178,7 +193,13 @@ class Auth
                 $_SESSION['token_login'] = $token;
                 $_COOKIE['token_login'] = $token;
                 $this->recordlog($token, $d['id']);
-                header("location: " . getBaseUrl());
+                if (isset($_SESSION['oldpage'])) {
+                    // jika ada session oldpage, arahkan pengguna ke halaman tersebut
+                    header("Location: " . $_SESSION['oldpage']);
+                } else {
+                    // jika tidak ada session oldpage, arahkan pengguna ke halaman home
+                    header("location: " . getBaseUrl());
+                }
             } else {
 
                 $this->backto();

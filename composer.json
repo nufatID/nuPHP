@@ -7,7 +7,9 @@
     "type": "project",
     "require": {
         "steampixel/simple-php-router": "^0.7.1",
-          "sergeytsalkov/meekrodb": "dev-master"
+          "sergeytsalkov/meekrodb": "dev-master",
+          "illuminate/database": "10.x-dev",
+          "jenssegers/blade": "dev-master"
     },
     
     "authors": [
