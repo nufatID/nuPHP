@@ -18,6 +18,7 @@ $this->extend('layout/layout.php'); ?>
             <div class="tagline">
                 <p>Bootstrap 5 dan PHP untuk membuat website dengan cepat dan mudah</p>
                 <p>Designed with <i class="fas fa-heart"></i> for developers</p>
+
             </div>
 
 

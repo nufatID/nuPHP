@@ -9,15 +9,17 @@
         "steampixel/simple-php-router": "^0.7.1",
         "sergeytsalkov/meekrodb": "dev-master",
         "illuminate/database": "10.x-dev",
-        "jenssegers/blade": "dev-master",
         "dompdf/dompdf": "dev-master",
         "guzzlehttp/guzzle": "8.0.x-dev",
-        "firebase/php-jwt": "dev-main",
-          "illuminate/support": "^10.0"
+        "firebase/php-jwt": "dev-main"
     },
     "autoload": {
+        "files": [
+            "helper/function.php"
+        ],
         "psr-4": {
-            "App\\Model\\": "app/Model/"
+            "App\\Model\\": "app/Model/",
+            "App\\Helper\\": "class/"
         }
     },
     "authors": [

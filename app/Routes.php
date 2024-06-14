@@ -5,13 +5,14 @@ use Steampixel\Route;
 define('BASEPATH', BASE_DIR);
 
 Route::add('/', function () {
-    View('index');
+    view('index');
 });
+
 //kostumisasi router silahkan tambahkan disini.
 //mulai kostumisasi router
-Route::add('/home', function () {
-    View('home');
-});
+// Route::add('/home', function () {
+//     View('home');
+// });
 
 
 //end kostumisasi router
