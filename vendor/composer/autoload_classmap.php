@@ -10,6 +10,7 @@ return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'DB' => $vendorDir . '/sergeytsalkov/meekrodb/db.class.php',
     'DBTransaction' => $vendorDir . '/sergeytsalkov/meekrodb/db.class.php',
+    'Dompdf\\Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
     'MeekroDB' => $vendorDir . '/sergeytsalkov/meekrodb/db.class.php',
     'MeekroDBEval' => $vendorDir . '/sergeytsalkov/meekrodb/db.class.php',
     'MeekroDBException' => $vendorDir . '/sergeytsalkov/meekrodb/db.class.php',

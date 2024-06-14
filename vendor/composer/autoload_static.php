@@ -15,6 +15,7 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
         'ef65a1626449d89d0811cf9befce46f0' => __DIR__ . '/..' . '/illuminate/events/functions.php',
         '06a34129a50df3d9257ee706cf3c875b' => __DIR__ . '/..' . '/illuminate/filesystem/functions.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -29,12 +30,20 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
             'Symfony\\Contracts\\Translation\\' => 30,
             'Symfony\\Component\\Translation\\' => 30,
             'Symfony\\Component\\Finder\\' => 25,
+            'Svg\\' => 4,
+            'Sabberworm\\CSS\\' => 15,
         ),
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
+        ),
+        'M' => 
+        array (
+            'Masterminds\\' => 12,
         ),
         'J' => 
         array (
@@ -53,8 +62,20 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
             'Illuminate\\Config\\' => 18,
             'Illuminate\\Bus\\' => 15,
         ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
+        ),
+        'F' => 
+        array (
+            'FontLib\\' => 8,
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
+            'Dompdf\\' => 7,
             'Doctrine\\Inflector\\' => 19,
         ),
         'C' => 
@@ -65,6 +86,10 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         'B' => 
         array (
             'Brick\\Math\\' => 11,
+        ),
+        'A' => 
+        array (
+            'App\\Model\\' => 10,
         ),
     );
 
@@ -93,9 +118,26 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
         ),
+        'Svg\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-svg-lib/src/Svg',
+        ),
+        'Sabberworm\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
+        ),
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -104,6 +146,10 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         'Psr\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
+        ),
+        'Masterminds\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/masterminds/html5/src',
         ),
         'Jenssegers\\Blade\\' => 
         array (
@@ -152,6 +198,30 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         array (
             0 => __DIR__ . '/..' . '/illuminate/bus',
         ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'FontLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'Dompdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
+        ),
         'Doctrine\\Inflector\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector',
@@ -167,6 +237,10 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         'Brick\\Math\\' => 
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
+        ),
+        'App\\Model\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/Model',
         ),
     );
 
@@ -185,6 +259,7 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'DB' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
         'DBTransaction' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
+        'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'MeekroDB' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
         'MeekroDBEval' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
         'MeekroDBException' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',

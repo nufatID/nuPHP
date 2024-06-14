@@ -1,7 +1,11 @@
 <?php
+
 function getBaseUrl()
 {
-    return BASE_URL . BASE_DIR;
+    $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+    $host = $_SERVER['HTTP_HOST'];
+    $baseUrl = $scheme . '://' . $host . '/';
+    return $baseUrl;
 }
 function getVersion()
 {

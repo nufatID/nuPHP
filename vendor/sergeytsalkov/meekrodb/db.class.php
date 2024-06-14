@@ -16,7 +16,60 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// If the mysqli extension is missing, trying to load MeekroDB will fail
+// because the MYSQLI_OPT_CONNECT_TIMEOUT constant will be missing.
+// Putting our warning here is the only way to make sure the user sees a sensible
+// error message.
+if (! extension_loaded('mysqli')) {
+  throw new Exception("MeekroDB requires the mysqli extension for PHP");
+}
 
+/**
+ * @link https://meekro.com/docs/retrieving-data.html Retrieving Data
+ * 
+ * @method static mixed query(string $query, ...$parameters)
+ * @method static mixed queryFirstRow(string $query, ...$parameters)
+ * @method static mixed queryFirstField(string $query, ...$parameters)
+ * @method static mixed queryFirstList(string $query, ...$parameters)
+ * @method static mixed queryFirstColumn(string $query, ...$parameters)
+ * @method static mixed queryFullColumns(string $query, ...$parameters)
+ * @method static mixed queryWalk(string $query, ...$parameters)
+ * 
+ * @link https://meekro.com/docs/altering-data.html Altering Data
+ * 
+ * @method static int insert(string $table_name, array $data, ...$parameters)
+ * @method static mixed insertId()
+ * @method static int insertIgnore(string $table_name, array $data, ...$parameters)
+ * @method static int insertUpdate(string $table_name, array $data, ...$parameters)
+ * @method static int replace(string $table_name, array $data, ...$parameters)
+ * @method static int update(string $table_name, array $data, ...$parameters)
+ * @method static int delete(string $table_name, ...$parameters)
+ * @method static int affectedRows()
+ * 
+ * @link https://meekro.com/docs/transactions.html Transactions
+ * 
+ * @method static int startTransaction()
+ * @method static int commit()
+ * @method static int rollback()
+ * @method static int transactionDepth()
+ * 
+ * @link https://meekro.com/docs/hooks.html
+ * 
+ * @method static int addHook(string $hook_type, callable $fn)
+ * @method static void removeHook(string $hook_type, int $hook_id)
+ * @method static void removeHooks(string $hook_type)
+ * 
+ * @link https://meekro.com/docs/misc-methods.html Misc Methods and Variables
+ * 
+ * @method static void useDB(string $database_name)
+ * @method static array tableList(?string $database_name = null)
+ * @method static array columnList(string $table_name)
+ * @method static void disconnect()
+ * @method static mysqli get()
+ * @method static string lastQuery()
+ * @method static string parse(string $query, ...$parameters)
+ * @method static string serverVersion()
+ */
 class DB {
   // initial connection
   public static $dbName = '';
@@ -34,11 +87,12 @@ class DB {
   public static $ssl = null;
   public static $connect_options = array(MYSQLI_OPT_CONNECT_TIMEOUT => 30);
   public static $connect_flags = 0;
+  public static $reconnect_after = 14400;
   public static $logfile;
   
   // internal
   protected static $mdb = null;
-  public static $variables_to_sync = array('param_char', 'named_param_seperator', 'nested_transactions', 'ssl', 'connect_options', 'connect_flags', 'logfile');
+  public static $variables_to_sync = array('param_char', 'named_param_seperator', 'nested_transactions', 'ssl', 'connect_options', 'connect_flags', 'reconnect_after', 'logfile');
   
   public static function getMDB() {
     $mdb = DB::$mdb;
@@ -87,6 +141,7 @@ class MeekroDB {
   public $ssl = null;
   public $connect_options = array(MYSQLI_OPT_CONNECT_TIMEOUT => 30);
   public $connect_flags = 0;
+  public $reconnect_after = 14400;
   public $logfile;
   
   // internal
@@ -98,6 +153,7 @@ class MeekroDB {
   public $current_db = null;
   public $nested_transactions_count = 0;
   public $last_query;
+  public $last_query_at=0;
 
   protected $hooks = array(
     'pre_parse' => array(),
@@ -127,7 +183,10 @@ class MeekroDB {
     $this->sync_config();
   }
 
-  // suck in config settings from static class
+  /**
+   * @internal 
+   * suck in config settings from static class
+   */
   public function sync_config() {
     foreach (DB::$variables_to_sync as $variable) {
       if ($this->$variable !== DB::$$variable) {
@@ -140,6 +199,11 @@ class MeekroDB {
     $mysql = $this->internal_mysql;
     
     if (!($mysql instanceof MySQLi)) {
+      // PHP 8.1+ sets a reporting mode by default, causing it to throw mysqli_sql_exceptions
+      // we don't want this because we're checking mysqli->error anyway
+      $driver = new mysqli_driver();
+      $driver->report_mode = MYSQLI_REPORT_OFF;
+
       if (! $this->port) $this->port = ini_get('mysqli.default_port');
       $this->current_db = $this->dbName;
       $mysql = new mysqli();
@@ -173,10 +237,8 @@ class MeekroDB {
   }
   
   public function disconnect() {
-    $mysqli = $this->internal_mysql;
-    if ($mysqli instanceof MySQLi) {
-      if ($thread_id = $mysqli->thread_id) $mysqli->kill($thread_id); 
-      $mysqli->close();
+    if ($this->internal_mysql) {
+      $this->internal_mysql->close();
     }
     $this->internal_mysql = null; 
   }
@@ -215,7 +277,7 @@ class MeekroDB {
     $this->hooks[$type] = array();
   }
 
-  function runHook($type, $args=array()) {
+  protected function runHook($type, $args=array()) {
     if (! array_key_exists($type, $this->hooks)) {
       throw new MeekroDBException("Hook type $type is not recognized");
     }
@@ -287,19 +349,18 @@ class MeekroDB {
 
     $query = $args['query'];
     $query = preg_replace('/\s+/', ' ', $query);
-    $query = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $query);
 
     $results[] = sprintf('[%s]', date('Y-m-d H:i:s'));
     $results[] = sprintf('QUERY: %s', $query);
     $results[] = sprintf('RUNTIME: %s ms', $args['runtime']);
 
-    if (isset($args['affected']) && $args['affected']) {
+    if ($args['affected']) {
       $results[] = sprintf('AFFECTED ROWS: %s', $args['affected']);
     }
-    if (isset($args['rows']) && $args['rows']) {
+    if ($args['rows']) {
       $results[] = sprintf('RETURNED ROWS: %s', $args['rows']);
     }
-    if (isset($args['error'])) {
+    if ($args['error']) {
       $results[] = 'ERROR: ' . $args['error'];
     }
     
@@ -312,12 +373,21 @@ class MeekroDB {
     }
   }
   
+  /**
+   * @deprecated No longer recommended.
+   */
+  public function count() { return call_user_func_array(array($this, 'numRows'), func_get_args()); }
+
+  /**
+   * @deprecated No longer recommended.
+   */
+  public function numRows() { return $this->num_rows; }
+
   public function serverVersion() { $this->get(); return $this->server_info; }
   public function transactionDepth() { return $this->nested_transactions_count; }
   public function insertId() { return $this->insert_id; }
   public function affectedRows() { return $this->affected_rows; }
-  public function count() { return call_user_func_array(array($this, 'numRows'), func_get_args()); }
-  public function numRows() { return $this->num_rows; }
+  
   public function lastQuery() { return $this->last_query; }
   
   public function useDB() { return call_user_func_array(array($this, 'setDB'), func_get_args()); }
@@ -329,10 +399,6 @@ class MeekroDB {
   
   
   public function startTransaction() {
-    if ($this->nested_transactions && $this->serverVersion() < '5.5') {
-      throw new MeekroDBException("Nested transactions are only available on MySQL 5.5 and greater. You are using MySQL " . $this->serverVersion());
-    }
-    
     if (!$this->nested_transactions || $this->nested_transactions_count == 0) {
       $this->query('START TRANSACTION');
       $this->nested_transactions_count = 1;
@@ -345,10 +411,6 @@ class MeekroDB {
   }
   
   public function commit($all=false) {
-    if ($this->nested_transactions && $this->serverVersion() < '5.5') {
-      throw new MeekroDBException("Nested transactions are only available on MySQL 5.5 and greater. You are using MySQL " . $this->serverVersion());
-    }
-    
     if ($this->nested_transactions && $this->nested_transactions_count > 0)
       $this->nested_transactions_count--;
     
@@ -363,10 +425,6 @@ class MeekroDB {
   }
   
   public function rollback($all=false) {
-    if ($this->nested_transactions && $this->serverVersion() < '5.5') {
-      throw new MeekroDBException("Nested transactions are only available on MySQL 5.5 and greater. You are using MySQL " . $this->serverVersion());
-    }
-    
     if ($this->nested_transactions && $this->nested_transactions_count > 0)
       $this->nested_transactions_count--;
     
@@ -380,7 +438,7 @@ class MeekroDB {
     return $this->nested_transactions_count;
   }
   
-  function formatBackticks($name, $split_dots=true) {
+  protected function formatBackticks($name, $split_dots=true) {
     $name = trim($name, '`');
     
     if ($split_dots && strpos($name, '.')) {
@@ -390,32 +448,67 @@ class MeekroDB {
     return '`' . str_replace('`', '``', $name) . '`'; 
   }
 
-  function formatTableName($table) {
+  /**
+   * @internal has to be public for PHP 5.3 compatability
+   */
+  public function formatTableName($table) {
     return $this->formatBackticks($table, true);
   }
 
-  function formatColumnName($column) {
+  /**
+   * @internal has to be public for PHP 5.3 compatability
+   */
+  public function formatColumnName($column) {
     return $this->formatBackticks($column, false);
   }
   
   public function update() {
     $args = func_get_args();
+    if (count($args) < 3) {
+      throw new MeekroDBException("update(): at least 3 arguments expected");
+    }
+
     $table = array_shift($args);
     $params = array_shift($args);
-
+    if (! is_array($params)) {
+      throw new MeekroDBException("update(): second argument must be assoc array");
+    }
     $update_part = $this->parse(
       str_replace('%', $this->param_char, "UPDATE %b SET %hc"),
       $table, $params
     );
 
-    // we don't know if they used named or numbered args, so the where clause
-    // must be run through the parser separately
-    $where_part = call_user_func_array(array($this, 'parse'), $args);
+    if (is_array($args[0])) {
+      $where_part = $this->parse(str_replace('%', $this->param_char, "%ha"), $args[0]);
+    } else {
+      // we don't know if they used named or numbered args, so the where clause
+      // must be run through the parser separately
+      $where_part = call_user_func_array(array($this, 'parse'), $args);
+    }
+    
     $query = $update_part . ' WHERE ' . $where_part;
     return $this->query($query);
   }
+
+  public function delete() {
+    $args = func_get_args();
+    if (count($args) < 2) {
+      throw new MeekroDBException("delete(): at least 2 arguments expected");
+    }
+
+    $table = $this->formatTableName(array_shift($args));
+
+    if (is_array($args[0])) {
+      $where = $this->parse(str_replace('%', $this->param_char, "%ha"), $args[0]);
+    } else {
+      $where = call_user_func_array(array($this, 'parse'), $args);
+    }
+    
+    $query = "DELETE FROM {$table} WHERE {$where}";
+    return $this->query($query);
+  }
   
-  public function insertOrReplace($which, $table, $datas, $options=array()) {
+  protected function insertOrReplace($which, $table, $datas, $options=array()) {
     $datas = unserialize(serialize($datas)); // break references within array
     $keys = $values = array();
     
@@ -479,15 +572,6 @@ class MeekroDB {
     else $update = $args;
     
     return $this->insertOrReplace('INSERT', $table, $data, array('update' => $update)); 
-  }
-  
-  public function delete() {
-    $args = func_get_args();
-    $table = $this->formatTableName(array_shift($args));
-
-    $where = call_user_func_array(array($this, 'parse'), $args);
-    $query = "DELETE FROM {$table} WHERE {$where}";
-    return $this->query($query);
   }
   
   public function sqleval() {
@@ -723,8 +807,14 @@ class MeekroDB {
     return $query;
   }
   
+  /**
+   * @internal has to be public for PHP 5.3 compatability
+   */
   public function escape($str) { return "'" . $this->get()->real_escape_string(strval($str)) . "'"; }
   
+  /**
+   * @internal has to be public for PHP 5.3 compatability
+   */
   public function sanitize($value, $type='basic', $hashjoin=', ') {
     if ($type == 'basic') {
       if (is_object($value)) {
@@ -775,7 +865,10 @@ class MeekroDB {
     
   }
 
-  function escapeTS($ts) {
+  /**
+   * @internal has to be public for PHP 5.3 compatability
+   */
+  public function escapeTS($ts) {
     if (is_string($ts)) {
       $str = date('Y-m-d H:i:s', strtotime($ts));
     }
@@ -786,13 +879,20 @@ class MeekroDB {
     return $this->escape($str);
   }
   
-  function intval($var) {
+  /**
+   * @internal has to be public for PHP 5.3 compatability
+   */
+  public function intval($var) {
     if (PHP_INT_SIZE == 8) return intval($var);
     return floor(doubleval($var));
   }
-  
+
   public function query() { return $this->queryHelper(array('assoc' => true), func_get_args()); }
-  public function queryAllLists() { return $this->queryHelper(array(), func_get_args()); }
+
+  /**
+   * @deprecated
+   */
+  public function queryAllLists() { return $this->queryHelper(array(), func_get_args()); }  
   public function queryFullColumns() { return $this->queryHelper(array('fullcols' => true), func_get_args()); }
   public function queryWalk() { return $this->queryHelper(array('walk' => true), func_get_args()); }
   
@@ -806,10 +906,15 @@ class MeekroDB {
     $opts_walk = (isset($opts['walk']) && $opts['walk']);
     $is_buffered = !($opts_unbuf || $opts_walk);
 
+    if ($this->reconnect_after > 0 && time() - $this->last_query_at >= $this->reconnect_after) {
+      $this->disconnect();
+    }
+
     list($query, $args) = $this->runHook('pre_parse', array('query' => $query, 'args' => $args));    
     $sql = call_user_func_array(array($this, 'parse'), array_merge(array($query), $args));
     $sql = $this->runHook('pre_run', array('query' => $sql));
     $this->last_query = $sql;
+    $this->last_query_at = time();
     
     $db = $this->get();
     $starttime = microtime(true);
@@ -829,7 +934,14 @@ class MeekroDB {
       $Exception = new MeekroDBException($db->error, $sql, $db->errno);
     }
 
-    $hookHash = array('query' => $sql, 'runtime' => $runtime);
+    $hookHash = array(
+      'query' => $sql,
+      'runtime' => $runtime,
+      'exception' => null,
+      'error' => null,
+      'rows' => null,
+      'affected' => null
+    );
     if ($Exception) {
       $hookHash['exception'] = $Exception;
       $hookHash['error'] = $Exception->getMessage();
@@ -849,9 +961,16 @@ class MeekroDB {
       $this->runHook('run_success', $hookHash);
     }
     
-    if ($opts_walk) return new MeekroDBWalk($db, $result);
-    if (!($result instanceof MySQLi_Result)) return $result; // query was not a SELECT?
-    if ($opts_raw) return $result;
+    if ($opts_walk) {
+      return new MeekroDBWalk($db, $result);
+    }
+    if (!($result instanceof MySQLi_Result)) {
+      // query was not a SELECT
+      return $result ? $this->affected_rows : $result;
+    }
+    if ($opts_raw) {
+      return $result;
+    }
     
     $return = array();
 
@@ -921,11 +1040,37 @@ class MeekroDB {
     else $this->logfile = null;
   }
 
-  public function queryRaw() { return $this->queryHelper(array('raw' => true), func_get_args()); }
-  public function queryRawUnbuf() { return $this->queryHelper(array('raw' => true, 'unbuf' => true), func_get_args()); }
-  public function queryOneList() { return call_user_func_array(array($this, 'queryFirstList'), func_get_args()); }
-  public function queryOneRow() { return call_user_func_array(array($this, 'queryFirstRow'), func_get_args()); }
+  /**
+   * @deprecated
+   */
+  public function queryRaw() { 
+    return $this->queryHelper(array('raw' => true), func_get_args());
+  }
 
+  /**
+   * @deprecated
+   */
+  public function queryRawUnbuf() { 
+    return $this->queryHelper(array('raw' => true, 'unbuf' => true), func_get_args());
+  }
+
+  /**
+   * @deprecated
+   */
+  public function queryOneList() { 
+    return call_user_func_array(array($this, 'queryFirstList'), func_get_args());
+  }
+
+  /**
+   * @deprecated
+   */
+  public function queryOneRow() { 
+    return call_user_func_array(array($this, 'queryFirstRow'), func_get_args());
+  }
+
+  /**
+   * @deprecated
+   */
   public function queryOneField() {
     $args = func_get_args();
     $column = array_shift($args);
@@ -941,6 +1086,9 @@ class MeekroDB {
     return $row[$column];
   }
 
+  /**
+   * @deprecated
+   */
   public function queryOneColumn() {
     $args = func_get_args();
     $column = array_shift($args);

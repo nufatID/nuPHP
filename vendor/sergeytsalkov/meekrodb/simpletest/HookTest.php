@@ -92,8 +92,9 @@ class HookTest extends SimpleTest {
       return false;
     };
     DB::addHook('run_failed', $error_handler);
-    DB::query("SELET * FROM accounts");
+    $result = DB::query("SELET * FROM accounts");
     $this->assert($anonymous_error_callback_worked === 1);
+    $this->assert($result === false);
     DB::removeHooks('run_failed');
   }
 
@@ -101,7 +102,7 @@ class HookTest extends SimpleTest {
     $callback_worked = false;
 
     $fn = function($hash) use (&$callback_worked) {
-      if (!isset($hash['error']) && !isset($hash['exception'])) {
+      if (!$hash['error'] && !$hash['exception']) {
         $callback_worked = true;
       }
     };

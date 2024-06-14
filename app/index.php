@@ -1,5 +1,5 @@
 <?php
-class Index extends Database
+class index extends Database
 {
     public $table;
     public function set($na)
