@@ -39,7 +39,7 @@ function views($viewName, $templateData)
 }
 
 spl_autoload_register(function ($class) {
-    include  __DIR__ . '/classes/' . $class . '.php';
+    include  __DIR__ . '/core/classes/' . $class . '.php';
 });
 
 require_once('app/index.php');

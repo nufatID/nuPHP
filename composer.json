@@ -22,7 +22,7 @@
         ],
         "psr-4": {
             "App\\Model\\": "app/Model/",
-            "App\\Helper\\": "class/"
+            "App\\Helper\\": "helper/class/"
         }
     },
     "authors": [
