@@ -1,7 +1,7 @@
 <?php
 
 use App\Model\User;
-use Jenssegers\Blade\Blade;
+use Illuminate\Support\Str;
 
 class pages extends Controller
 {
@@ -11,32 +11,21 @@ class pages extends Controller
 
         $data = ['name' => 'John Doe'];
         $data["mod"] = $model->all();
-
+        $data["slug"] = Str::of('NUFAT NUPHP')->slug('-');
         Views("index", $data);
     }
     public function yu($bhj, $gjkhk, $hgjg)
     {
         $model = $this->model("Anggota");
-
         $data = ['name' => 'John Doe'];
         $data["mod"] = generateUID(10);
-
         View("home", $data);
     }
     public function yuser($bhj, $gjkhk, $hgjg)
     {
         $model = $this->model("Anggota");
-
         $data["mod"] = User::all();
-
-
-        View("index", $data);
-    }
-    public function aw()
-    {
-
-        $blade = new Blade('views', 'cache');
-
-        echo $blade->make('homepage', ['name' => 'John Doe'])->render();
+        $data["slug"] = Str::of('NUFAT NUPHP')->slug('-');
+        Views("index", $data);
     }
 }

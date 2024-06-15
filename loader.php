@@ -1,5 +1,43 @@
 <?php
 
+use Illuminate\Container\Container;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\View\Engines\CompilerEngine;
+use Illuminate\View\Engines\EngineResolver;
+use Illuminate\View\Engines\PhpEngine;
+use Illuminate\View\Factory;
+use Illuminate\View\FileViewFinder;
+
+function views($viewName, $templateData)
+{
+    // Note that you can set several directories where your templates are located
+    $pathsToTemplates = [__DIR__ . '/templates'];
+    $pathToCompiledTemplates = __DIR__ . '/cache';
+
+    // Dependencies
+    $filesystem = new Filesystem;
+    $eventDispatcher = new Dispatcher(new Container);
+
+    // Create View Factory capable of rendering PHP and Blade templates
+    $viewResolver = new EngineResolver;
+    $bladeCompiler = new BladeCompiler($filesystem, $pathToCompiledTemplates);
+    $viewResolver->register('blade', function () use ($bladeCompiler) {
+        return new CompilerEngine($bladeCompiler);
+    });
+
+    $viewResolver->register('php', function () {
+        return new PhpEngine;
+    });
+
+    $viewFinder = new FileViewFinder($filesystem, $pathsToTemplates);
+    $viewFactory = new Factory($viewResolver, $viewFinder, $eventDispatcher);
+
+    // Render template
+    echo $viewFactory->make($viewName, $templateData)->render();
+}
+
 spl_autoload_register(function ($class) {
     include  __DIR__ . '/classes/' . $class . '.php';
 });

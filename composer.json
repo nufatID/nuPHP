@@ -11,7 +11,9 @@
         "illuminate/database": "10.x-dev",
         "dompdf/dompdf": "dev-master",
         "guzzlehttp/guzzle": "8.0.x-dev",
-        "firebase/php-jwt": "dev-main"
+        "firebase/php-jwt": "dev-main",
+        "illuminate/view": "10.x-dev",
+        "illuminate/support": "10.x-dev"
     },
     "autoload": {
         "files": [
