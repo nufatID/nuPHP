@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e03fef713cdc64bfa8dcc0f48a246015",
+    "content-hash": "221f674b570967af4e608504abdea3a4",
     "packages": [
         {
             "name": "brick/math",
@@ -1612,6 +1612,43 @@
             "time": "2024-06-03T20:00:41+00:00"
         },
         {
+            "name": "nufat/cli",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nufatID/cli.git",
+                "reference": "dcfdd7b08c86d5856a1157a14d66ca7f97027b8e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nufatID/cli/zipball/dcfdd7b08c86d5856a1157a14d66ca7f97027b8e",
+                "reference": "dcfdd7b08c86d5856a1157a14d66ca7f97027b8e",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nufat\\Cli\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "nufat.id"
+                }
+            ],
+            "description": "nufatcli app",
+            "support": {
+                "issues": "https://github.com/nufatID/cli/issues",
+                "source": "https://github.com/nufatID/cli/tree/v1.0.2"
+            },
+            "time": "2024-06-15T06:53:28+00:00"
+        },
+        {
             "name": "psr/clock",
             "version": "1.0.0",
             "source": {
@@ -2042,16 +2079,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SergeyTsalkov/meekrodb.git",
-                "reference": "08b683a274365983aaf033cf9c589dcbe5190028"
+                "reference": "2b1b0fe3a0c8c2d4b7b08d889fa7280ec05b6693"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SergeyTsalkov/meekrodb/zipball/08b683a274365983aaf033cf9c589dcbe5190028",
-                "reference": "08b683a274365983aaf033cf9c589dcbe5190028",
+                "url": "https://api.github.com/repos/SergeyTsalkov/meekrodb/zipball/2b1b0fe3a0c8c2d4b7b08d889fa7280ec05b6693",
+                "reference": "2b1b0fe3a0c8c2d4b7b08d889fa7280ec05b6693",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.6.0"
             },
             "default-branch": true,
             "type": "library",
@@ -2081,9 +2118,9 @@
             "support": {
                 "email": "support@meekro.com",
                 "issues": "https://github.com/SergeyTsalkov/meekrodb/issues",
-                "source": "https://github.com/SergeyTsalkov/meekrodb/tree/v2.5.1"
+                "source": "https://github.com/SergeyTsalkov/meekrodb/tree/master"
             },
-            "time": "2023-10-10T00:28:49+00:00"
+            "time": "2024-06-15T03:42:04+00:00"
         },
         {
             "name": "steampixel/simple-php-router",
@@ -2681,7 +2718,8 @@
         "guzzlehttp/guzzle": 20,
         "firebase/php-jwt": 20,
         "illuminate/view": 20,
-        "illuminate/support": 20
+        "illuminate/support": 20,
+        "nufat/cli": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

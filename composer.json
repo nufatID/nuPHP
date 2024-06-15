@@ -13,7 +13,8 @@
         "guzzlehttp/guzzle": "8.0.x-dev",
         "firebase/php-jwt": "dev-main",
         "illuminate/view": "10.x-dev",
-        "illuminate/support": "10.x-dev"
+        "illuminate/support": "10.x-dev",
+        "nufat/cli": "dev-main"
     },
     "autoload": {
         "files": [

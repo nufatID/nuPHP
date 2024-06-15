@@ -2,7 +2,10 @@
 
 function my_error_handler($hash) {
   global $error_callback_worked;
-  if (substr_count($hash['error'], 'You have an error in your SQL syntax')) $error_callback_worked = 1;
+
+  if (substr_count($hash['error'], 'syntax')) {
+    $error_callback_worked = 1;
+  }
   return false;
 }
 
@@ -16,13 +19,19 @@ function my_success_handler($hash) {
 class HookTest extends SimpleTest {
   static function static_error_callback($hash) {
     global $static_error_callback_worked;
-    if (substr_count($hash['error'], 'You have an error in your SQL syntax')) $static_error_callback_worked = 1;
+
+    if (substr_count($hash['error'], 'syntax')) {
+      $static_error_callback_worked = 1;
+    }
     return false;
   }
 
   function nonstatic_error_callback($hash) {
     global $nonstatic_error_callback_worked;
-    if (substr_count($hash['error'], 'You have an error in your SQL syntax')) $nonstatic_error_callback_worked = 1;
+
+    if (substr_count($hash['error'], 'syntax')) {
+      $nonstatic_error_callback_worked = 1;
+    }
     return false;
   }
 
@@ -46,11 +55,10 @@ class HookTest extends SimpleTest {
   }
   
   function test_2_exception_catch() {
-    $dbname = DB::$dbName;
     try {
       DB::query("SELET * FROM accounts");
     } catch(MeekroDBException $e) {
-      $this->assert(substr_count($e->getMessage(), 'You have an error in your SQL syntax'));
+      $this->assert(substr_count($e->getMessage(), 'syntax'));
       $this->assert($e->getQuery() === 'SELET * FROM accounts');
       $exception_was_caught = 1;
     }
@@ -58,15 +66,14 @@ class HookTest extends SimpleTest {
     $this->assert(DB::lastQuery() === 'SELET * FROM accounts');
     
     try {
-      DB::insert("`$dbname`.`accounts`", array(
+      DB::insert('accounts', array(
         'id' => 2,
         'username' => 'Another Dude\'s \'Mom"',
         'password' => 'asdfsdse',
-        'age' => 35,
         'height' => 555.23
       ));
     } catch(MeekroDBException $e) {
-      $this->assert(substr_count($e->getMessage(), 'Duplicate entry'));
+      $this->assert($this->match_set($e->getMessage(), array('Duplicate entry', 'UNIQUE constraint')));
       $exception_was_caught = 2;
     }
     $this->assert($exception_was_caught === 2);
@@ -86,7 +93,7 @@ class HookTest extends SimpleTest {
     
     $error_handler = function($hash) {
       global $anonymous_error_callback_worked;
-      if (substr_count($hash['error'], 'You have an error in your SQL syntax')) {
+      if (substr_count($hash['error'], 'syntax')) {
         $anonymous_error_callback_worked = 1;
       }
       return false;
@@ -102,7 +109,7 @@ class HookTest extends SimpleTest {
     $callback_worked = false;
 
     $fn = function($hash) use (&$callback_worked) {
-      if (!$hash['error'] && !$hash['exception']) {
+      if (!$hash['error'] && !$hash['exception'] && $hash['rows'] === 7) {
         $callback_worked = true;
       }
     };
@@ -117,13 +124,18 @@ class HookTest extends SimpleTest {
     $callback_worked = false;
 
     $fn = function($hash) use (&$callback_worked) {
-      if ($hash['error'] && $hash['exception']) {
-        $expected_query = "SELEC * FROM accounts WHERE username!='Charlie\'s Friend'";
-        $expected_error = "error in your SQL syntax";
-        if ($hash['exception']->getQuery() == $expected_query && substr_count($hash['error'], $expected_error)) {
-          $callback_worked = true;
-        }
-      }
+      $expected_query = "SELEC * FROM accounts WHERE username!=?";
+      $expected_param = "Charlie's Friend";
+      $expected_error = "syntax";
+
+      if (!$hash['error'] || !$hash['exception']) return;
+      if ($hash['exception']->getQuery() != $expected_query) return;
+      if ($hash['exception']->getParams()[0] != $expected_param) return;
+      if ($hash['query'] != $expected_query) return;
+      if ($hash['params'][0] != $expected_param) return;
+      if (!substr_count($hash['error'], $expected_error)) return;
+
+      $callback_worked = true;
     };
 
     DB::addHook('post_run', $fn);
@@ -137,48 +149,32 @@ class HookTest extends SimpleTest {
   function test_7_pre_run() {
     $callback_worked = false;
 
-    $fn = function($args) { return str_replace('SLCT', 'SELET', $args['query']); };
-    $fn2 = function($args) { return str_replace('SELET', 'SELECT', $args['query']); };
-    $fn3 = function($args) use (&$callback_worked) { $callback_worked = true; };
+    $fn = function($args) {
+      $query = str_replace('SLCT', 'SELET', $args['query']);
+      return array($query, $args['params']);
+    };
+    $fn2 = function($args) { 
+      $query = str_replace('SELET', 'SELECT', $args['query']);
+      return $query;
+    };
+    $fn3 = function($args) use (&$callback_worked) { 
+      $callback_worked = true;
+    };
 
     DB::addHook('pre_run', $fn);
     DB::addHook('pre_run', $fn2);
     $last_hook = DB::addHook('pre_run', $fn3);
     $results = DB::query("SLCT * FROM accounts WHERE username!=%s", "Charlie's Friend");
-    $this->assert(count($results) == 4);
+    $this->assert(count($results) == 7);
     $this->assert($callback_worked);
 
     $callback_worked = false;
     DB::removeHook('pre_run', $last_hook);
     $results = DB::query("SLCT * FROM accounts WHERE username!=%s", "Charlie's Friend");
-    $this->assert(count($results) == 4);
+    $this->assert(count($results) == 7);
     $this->assert(!$callback_worked);
     
     DB::removeHooks('pre_run');
-  }
-
-  function test_8_pre_parse() {
-    $callback_worked = false;
-
-    $fn = function($args) { 
-      $args['query'] = str_replace('SLCT', 'SELECT', $args['query']);
-      return array($args['query'], $args['args']);
-    };
-    $fn2 = function($args) { 
-      $args['args'][0] = '1ofmany';
-      return array($args['query'], $args['args']);
-    };
-    $fn3 = function() use (&$callback_worked) {
-      $callback_worked = true;
-    };
-
-    DB::addHook('pre_parse', $fn);
-    DB::addHook('pre_parse', $fn2);
-    DB::addHook('pre_parse', $fn3);
-    $row = DB::queryFirstRow("SLCT * FROM accounts WHERE username=%s", "asdf");
-    $this->assert($row['password'] == 'something');
-    $this->assert($callback_worked);
-    DB::removeHooks('pre_parse');
   }
 
   function test_9_enough_args() {
@@ -279,10 +275,4 @@ class HookTest extends SimpleTest {
     $this->assert($error_worked);
   }
 
-
-
-
-
 }
-
-?>

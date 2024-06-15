@@ -1,5 +1,16 @@
 <?php
-include 'app/config.php';
+
+namespace Nufat\Cli;
+
+$configPath = getcwd() . '/core/config.php';
+
+if (file_exists($configPath)) {
+    include $configPath;
+} else {
+    echo "File config.php tidak ditemukan di jalur $configPath";
+    exit(1);
+}
+
 class DbCheck
 {
     protected $host = DB_HOST;
@@ -9,28 +20,29 @@ class DbCheck
     protected $dbh;
     protected $stmt;
     protected $databasecek;
+
     public function __construct()
     {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
         $options = [
-            PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            \PDO::ATTR_PERSISTENT => true,
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
         ];
         try {
-            $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
-        } catch (PDOException $e) {
+            $this->dbh = new \PDO($dsn, $this->user, $this->pass, $options);
+        } catch (\PDOException $e) {
             $this->databasecek = $e->getMessage();
         }
     }
+
     public function Index()
     {
-
         $y = '' . "\n";
         $y .= '---------------------------------------------------' . "\n";
         $y .= 'Database check : ' . "\n";
         if (isset($this->databasecek)) {
             $y .= $this->databasecek . "\n";
-            $y .= 'silahkan check di app/config.php untuk setting koneksi ke database ' . "\n";
+            $y .= 'Silahkan check di app/config.php untuk setting koneksi ke database ' . "\n";
             $y .= 'atau ketik perintah ' . "\n";
             $y .= 'php nu dbcheck fix' . "\n";
         } else {
@@ -40,6 +52,7 @@ class DbCheck
         $y .= '---------------------------------------------------' . "\n";
         return $y;
     }
+
     public function fix()
     {
         if (isset($this->databasecek)) {

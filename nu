@@ -1,8 +1,14 @@
-#!/usr/bin/php php
+#!/usr/bin/php
 <?php
-require_once 'vendor/zved/Help.php';
+
+require 'vendor/autoload.php';
+
+use Nufat\Cli\Buat;
+use Nufat\Cli\Help;
+
 print_r(run($argv));
-function  run($argv)
+
+function run($argv)
 {
     if (isset($argv[1])) {
         switch ($argv[1]) {
@@ -10,8 +16,7 @@ function  run($argv)
                 shell_exec('php -S localhost:8005 -t .');
                 break;
             case "buat":
-                require_once 'vendor/zved/Buat.php';
-                $buat = new Buat;
+                $buat = new Buat();
                 $method = (isset($argv[2])) ? $argv[2] : 'error atau';
                 $nama = (isset($argv[3])) ? $argv[3] : 'err';
                 $p1 = (isset($argv[4])) ? $argv[4] : null;
@@ -30,8 +35,7 @@ function  run($argv)
                 }
                 break;
             case "b":
-                require_once 'vendor/zved/Buat.php';
-                $buat = new Buat;
+                $buat = new Buat();
                 $method = (isset($argv[2])) ? $argv[2] : 'error atau';
                 $nama = (isset($argv[3])) ? $argv[3] : 'err';
                 $p1 = (isset($argv[4])) ? $argv[4] : null;
@@ -49,7 +53,6 @@ function  run($argv)
                     return Help::buat($method);
                 }
                 break;
-
             case "serve2":
                 return shell_exec('php -S localhost:8006 -t .');
                 break;
@@ -57,16 +60,13 @@ function  run($argv)
                 return shell_exec('php -S localhost:8007 -t .');
                 break;
             default:
-                if (file_exists('vendor/zved/' . $argv[1] . '.php')) {
-                    if ($argv[1] != 'help') {
-                        require_once 'vendor/zved/' . $argv[1] . '.php';
-                    }
-                    $ble = new $argv[1];
+                if (class_exists('Nufat\\Cli\\' . ucfirst($argv[1]))) {
+                    $classname = 'Nufat\\Cli\\' . ucfirst($argv[1]);
+                    $ble = new $classname();
                     if (isset($argv[2])) {
                         $bk = $argv[2];
                         return $ble->$bk();
                     } else {
-
                         return $ble->index();
                     }
                 } else {

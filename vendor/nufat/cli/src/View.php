@@ -1,4 +1,7 @@
 <?php
+
+namespace Nufat\Cli;
+
 class View
 {
 

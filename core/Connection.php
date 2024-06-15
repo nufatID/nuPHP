@@ -9,6 +9,7 @@ $capsule->addConnection([
     'database' => __DIR__ . '/database/database.sqlite',
     'prefix' => '',
 ]);
+
 $capsule->addConnection([
     'driver' => 'mysql',
     'host' => 'localhost',

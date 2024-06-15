@@ -3,7 +3,7 @@
         'name' => 'nufat/nuphp',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '6ec8ceb9ec795bc3bb9a5f0af3136ddc6b0774ca',
+        'reference' => '042b7352ed836559541a5241778d75c33e46877f',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -230,10 +230,21 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'nufat/cli' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'dcfdd7b08c86d5856a1157a14d66ca7f97027b8e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nufat/cli',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => false,
+        ),
         'nufat/nuphp' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '6ec8ceb9ec795bc3bb9a5f0af3136ddc6b0774ca',
+            'reference' => '042b7352ed836559541a5241778d75c33e46877f',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -352,7 +363,7 @@
         'sergeytsalkov/meekrodb' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '08b683a274365983aaf033cf9c589dcbe5190028',
+            'reference' => '2b1b0fe3a0c8c2d4b7b08d889fa7280ec05b6693',
             'type' => 'library',
             'install_path' => __DIR__ . '/../sergeytsalkov/meekrodb',
             'aliases' => array(

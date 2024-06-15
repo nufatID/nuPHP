@@ -42,6 +42,10 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
         ),
+        'N' => 
+        array (
+            'Nufat\\Cli\\' => 10,
+        ),
         'M' => 
         array (
             'Masterminds\\' => 12,
@@ -143,6 +147,10 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         'Psr\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
+        ),
+        'Nufat\\Cli\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nufat/cli/src',
         ),
         'Masterminds\\' => 
         array (
@@ -254,8 +262,8 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         'DBTransaction' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
         'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'MeekroDB' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
-        'MeekroDBEval' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
         'MeekroDBException' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
+        'MeekroDBParsedQuery' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
         'MeekroDBWalk' => __DIR__ . '/..' . '/sergeytsalkov/meekrodb/db.class.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',

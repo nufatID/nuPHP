@@ -1,17 +1,20 @@
 <?php
-include 'vendor/zved/dbcheck.php';
+
+namespace Nufat\Cli;
+
+use Nufat\Cli\DbCheck;
+
 class Auth extends DbCheck
 {
     public function Index()
     {
-        $conn = new mysqli($this->host, $this->user, $this->pass, $this->db_name);
-
+        // Gunakan namespace global untuk mysqli
+        $conn = new \mysqli($this->host, $this->user, $this->pass, $this->db_name);
 
         // query 
-        $exists = mysqli_query($conn, "SELECT 1 FROM users LIMIT 0",);
+        $exists = mysqli_query($conn, "SELECT 1 FROM users LIMIT 0");
 
         // check it exists
-
         $y = '' . "\n";
         $y .= '---------------------------------------------------' . "\n";
         if ($exists) {
@@ -28,14 +31,23 @@ class Auth extends DbCheck
         }
         $y .= '' . "\n";
 
-
         return $y;
     }
+
     public function sett()
     {
-        $conn = new mysqli($this->host, $this->user, $this->pass, $this->db_name);
+        // Gunakan namespace global untuk mysqli
+        $conn = new \mysqli($this->host, $this->user, $this->pass, $this->db_name);
         $query = '';
-        $sqlScript = file('vendor/zved/db.sql');
+
+        // Menentukan jalur relatif ke db.sql
+        $sqlScriptPath = __DIR__ . '/db.sql';
+        if (!file_exists($sqlScriptPath)) {
+            echo "File SQL tidak ditemukan di jalur $sqlScriptPath";
+            exit(1);
+        }
+
+        $sqlScript = file($sqlScriptPath);
         foreach ($sqlScript as $line) {
 
             $startWith = substr(trim($line), 0, 2);
@@ -58,7 +70,6 @@ class Auth extends DbCheck
         $y .= '' . "\n";
         $y .= 'system auth anda sudah bisa digunakan' . "\n";
         $y .= '' . "\n";
-
 
         return $y;
     }
