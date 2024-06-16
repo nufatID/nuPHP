@@ -1,4 +1,2 @@
 
-/.git
-
-!app/config.php
+vendor

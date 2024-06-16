@@ -48,6 +48,7 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         ),
         'M' => 
         array (
+            'Medoo\\' => 6,
             'Masterminds\\' => 12,
         ),
         'I' => 
@@ -55,6 +56,7 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
             'Illuminate\\View\\' => 16,
             'Illuminate\\Support\\' => 19,
             'Illuminate\\Pipeline\\' => 20,
+            'Illuminate\\Pagination\\' => 22,
             'Illuminate\\Filesystem\\' => 22,
             'Illuminate\\Events\\' => 18,
             'Illuminate\\Database\\' => 20,
@@ -152,6 +154,10 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         array (
             0 => __DIR__ . '/..' . '/nufat/cli/src',
         ),
+        'Medoo\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/catfan/medoo/src',
+        ),
         'Masterminds\\' => 
         array (
             0 => __DIR__ . '/..' . '/masterminds/html5/src',
@@ -170,6 +176,10 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         'Illuminate\\Pipeline\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/pipeline',
+        ),
+        'Illuminate\\Pagination\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/pagination',
         ),
         'Illuminate\\Filesystem\\' => 
         array (
@@ -241,7 +251,7 @@ class ComposerStaticInita25e700195aadc21a31ed90225e0b6aa
         ),
         'App\\Helper\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/class',
+            0 => __DIR__ . '/../..' . '/helper/class',
         ),
     );
 

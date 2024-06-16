@@ -3,7 +3,7 @@
         'name' => 'nufat/nuphp',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '042b7352ed836559541a5241778d75c33e46877f',
+        'reference' => '5ed260ae83bbdaacc435bc4f503be39cb869d4c8',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -26,6 +26,17 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../carbonphp/carbon-doctrine-types',
             'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'catfan/medoo' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'd1ff4e0e873a3e032e3d8804031dd6be4e013b22',
+            'type' => 'framework',
+            'install_path' => __DIR__ . '/../catfan/medoo',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
@@ -185,6 +196,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'illuminate/pagination' => array(
+            'pretty_version' => '10.x-dev',
+            'version' => '10.9999999.9999999.9999999-dev',
+            'reference' => '616874b9607ff35925347e1710a8b5151858cdf2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../illuminate/pagination',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'illuminate/pipeline' => array(
             'pretty_version' => '10.x-dev',
             'version' => '10.9999999.9999999.9999999-dev',
@@ -244,7 +264,7 @@
         'nufat/nuphp' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '042b7352ed836559541a5241778d75c33e46877f',
+            'reference' => '5ed260ae83bbdaacc435bc4f503be39cb869d4c8',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
