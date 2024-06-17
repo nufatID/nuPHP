@@ -1,89 +1,25 @@
 <?php
 
+use App\Model\User;
+
+
 class Auth
 {
-    private $host = DB_HOST;
-    private $user = DB_USER;
-    private $pass = DB_PASS;
-    private $db_name = DB_NAME;
-    private $dbh;
-    private $stmt;
     public $auth = AUTH;
-    protected $login;
-    protected $table = 'users';
-    protected $Mdb;
     public function __construct($re = null)
     {
-        $this->Mdb = new Medoo([
-            'database_type' => 'mysql',
-            'database_name' => 'nama_database',
-            'server' => 'localhost',
-            'username' => 'username',
-            'password' => 'password'
-        ]);
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
-        $options = [
-            PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ];
-        try {
-            $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
-        } catch (PDOException $e) {
-            die($e->getMessage());
-        }
 
         if (isset($_POST['auth_login']) && $_POST['auth_login'] == $_SESSION['token_csrf']) {
-            $email = $_POST['username'];
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $this->loginemail();
-            } else {
-                $this->login();
-            }
+            $this->login($_POST["username"], $_POST['password']);
+            exit();
+        }
 
-            exit();
-        }
-        if (isset($_POST['auth_register']) && $_POST['auth_register'] == $_SESSION['token_csrf']) {
-            $this->cekumail();
-            exit();
-        }
         $this->auth = (isset($re)) ?  $re : $this->auth;
         ($this->auth) ? $this->checklog() : '';
     }
-    public function query($q)
-    {
-        $this->stmt = $this->dbh->prepare($q);
-    }
 
-    public function bind($param, $value, $type = null)
-    {
-        if (is_null($type)) {
-            switch (true) {
-                case is_int($value):
-                    $type = PDO::PARAM_INT;
-                    break;
-                case is_bool($value):
-                    $type = PDO::PARAM_BOOL;
-                    break;
-                case is_null($value):
-                    $type = PDO::PARAM_NULL;
-                    break;
-                default:
-                    $type = PDO::PARAM_STR;
-            }
-        }
-        $this->stmt->bindValue($param, $value, $type);
-    }
-    //dbArtibute
-    public function execute()
-    {
-        $this->stmt->execute();
-    }
 
-    public function resultSet()
-    {
-        $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_ASSOC);
-    }
+
     private function checklog()
     {
         if (!isset($_SESSION['login'])) {
@@ -94,127 +30,75 @@ class Auth
             $this->checktoken();
         }
     }
-    public function checktoken()
+
+
+    public function checkToken()
     {
-        $this->query('SELECT * FROM ' . $this->table . ' WHERE token=:id');
-        $this->bind('id', $_SESSION['token_login']);
-        if (!$this->resultSet()) {
+        $user = user::where('token', $_SESSION['token_login'])->first();
+        if (!$user) {
             unset($_SESSION['login']);
             header("location: " . getBaseUrl());
         }
     }
-    public function cekuserreg()
+
+    public function Password($p)
     {
-        $this->query('SELECT * FROM ' . $this->table . ' WHERE username=:id');
-        $this->bind('id', $_POST['username']);
-        if ($this->resultSet()) {
-            Alert::SetAlert('danger', 'Username sudah digunakan!!!');
-            Oldata::set();
-            header("location: " . getBaseUrl() . "auth/register");
-            exit();
-        } else {
-            $this->register();
-        }
+        $options = [
+            'cost' => 10,
+        ];
+        return password_hash($p, PASSWORD_BCRYPT, $options);
     }
-    public function cekumail()
-    {
-        $email = $_POST['email'];
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->query('SELECT * FROM ' . $this->table . ' WHERE email=:id');
-            $this->bind('id', $_POST['email']);
-            if ($this->resultSet()) {
-                Alert::SetAlert('danger', 'Email sudah digunakan!!!');
-                Oldata::set();
-                header("location: " . getBaseUrl() . "auth/register");
-                exit();
-            } else {
-                $this->cekuserreg();
-            }
-        } else {
-            Alert::SetAlert('danger', 'alamat Email tidak valid!!!');
-            Oldata::set();
-            header("location: " . getBaseUrl() . "auth/register");
-            exit();
-        }
-    }
-    public function register()
-    {
-        $q = " INSERT INTO $this->table (username, email, password_hash) VALUES (:username, :email, :password_hash)";
-        $this->query($q);
-        $this->bind('username', $_POST['username']);
-        $this->bind('email', $_POST['email']);
-        $this->bind('password_hash', $this->Password($_POST['password']));
-        $this->execute();
-        header("location: " . getBaseUrl());
-    }
+
+
+
+
     public function logout()
     {
         unset($_SESSION['login']);
+        session_unset();
+        session_destroy();
+        setcookie('token_login', '', time() - 3600, "/");
+
         header("location: " . getBaseUrl());
     }
-    private function Login()
+
+
+    public function login($emailOrUsername, $password)
     {
-        $this->query('SELECT * FROM ' . $this->table . ' WHERE username=:id');
-        $this->bind('id', $_POST["username"]);
-        $d = $this->resultSet();
-        if ($this->resultSet()) {
-            if ($d['username'] == $_POST['username'] && password_verify($_POST['password'], $d['password_hash'])) {
-                $token = bin2hex(random_bytes(17));
-                $_SESSION['login'] = $d['id'];
-                $_SESSION['token_login'] = $token;
-                $_COOKIE['token_login'] = $token;
-                $this->recordlog($token, $d['id']);
+        $user = User::where('email', $emailOrUsername)
+            ->orWhere('username', $emailOrUsername)
+            ->first();
 
-                if (isset($_SESSION['oldpage'])) {
-                    // jika ada session oldpage, arahkan pengguna ke halaman tersebut
-                    header("Location: " . $_SESSION['oldpage']);
-                } else {
-                    // jika tidak ada session oldpage, arahkan pengguna ke halaman home
-                    header("location: " . getBaseUrl());
-                }
+        if ($user && password_verify($password, $user->password_hash)) {
+            $token = bin2hex(random_bytes(17));
+            $_SESSION['login'] = $user->id;
+            $_SESSION['login_member'] = $user->member_id;
+            $_SESSION['login_noreg'] = $user->noreg;
+            $_SESSION['login_role'] = $user->role;
+            $_SESSION['token_login'] = $token;
+            $_COOKIE['token_login'] = $token;
+            $this->recordLog($token, $user->id);
+
+            if (isset($_SESSION['oldpage'])) {
+                header("Location: " . $_SESSION['oldpage']);
             } else {
-
-                $this->backto();
+                header("location: " . getBaseUrl());
             }
-        } else {
-            $this->backto();
-        }
-        // exit();
-    }
-    private function Loginemail()
-    {
-        $this->query('SELECT * FROM ' . $this->table . ' WHERE email=:id');
-        $this->bind('id', $_POST["username"]);
-        $d = $this->resultSet();
-        if ($this->resultSet()) {
-            if ($d['email'] == $_POST['username'] && password_verify($_POST['password'], $d['password_hash'])) {
-                $token = bin2hex(random_bytes(17));
-                $_SESSION['login'] = $d['id'];
-                $_SESSION['token_login'] = $token;
-                $_COOKIE['token_login'] = $token;
-                $this->recordlog($token, $d['id']);
-                if (isset($_SESSION['oldpage'])) {
-                    // jika ada session oldpage, arahkan pengguna ke halaman tersebut
-                    header("Location: " . $_SESSION['oldpage']);
-                } else {
-                    // jika tidak ada session oldpage, arahkan pengguna ke halaman home
-                    header("location: " . getBaseUrl());
-                }
-            } else {
-
-                $this->backto();
-            }
+            exit();
         } else {
             $this->backto();
         }
     }
-    private function recordlog($token, $id)
+
+
+    private function recordLog($token, $id)
     {
-        $date = new DateTime();
-        $q = " UPDATE $this->table SET token='$token', updated_at='{$date->format('Y-m-d H:i:s')}'   WHERE id=:id ";
-        $this->query($q);
-        $this->bind('id', $id);
-        $this->execute();
+        $user = User::find($id);
+        if ($user) {
+            $user->token = $token;
+            $user->updated_at = now(); // Use Laravel's now() helper to get the current date and time
+            $user->save();
+        }
     }
     public function backto()
     {
@@ -230,13 +114,7 @@ class Auth
         header("location: " . getBaseUrl() . "auth/login");
         exit();
     }
-    public function Password($p)
-    {
-        $options = [
-            'cost' => 12,
-        ];
-        return password_hash($p, PASSWORD_BCRYPT, $options);
-    }
+
     public function isLoggedIn()
     {
         if (isset($_SESSION['login'])) {
