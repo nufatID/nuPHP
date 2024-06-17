@@ -37,7 +37,11 @@ class Template implements \ArrayAccess
 			$this->extends = new Template($path);
 		}
 	}
-
+	public function model($m)
+	{
+		require_once 'app/models/' . $m . '.php';
+		return new $m;
+	}
 	public function block($name = null, $value = null)
 	{
 		if ($value !== null) {

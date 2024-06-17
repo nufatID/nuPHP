@@ -22,20 +22,15 @@ function View($file, $data = [])
 }
 function CetakInit($file)
 {
-
-    $modelna = new index();
-    $modelna->set($file);
     $theme = new SimpleTemplateEngine\Environment('views');
-    $data['data'] = $modelna;
     $data['old']  = Oldata::get();
     echo $theme->render($file . '.php', $data);
 }
 function CetakInitf($file, $folder, $p1 = null, $p2 = null, $p3 = null)
 {
-    $modelna = new index();
-    $modelna->set($folder);
+
     $theme = new SimpleTemplateEngine\Environment('views');
-    $data['data'] = $modelna;
+
     $data['p1'] = $p1;
     $data['p2'] = $p2;
     $data['p3'] = $p3;
