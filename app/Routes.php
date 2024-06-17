@@ -5,7 +5,7 @@ use Steampixel\Route;
 define('BASEPATH', BASE_DIR);
 
 Route::add('/', function () {
-    view('index');
+    tolink('home');
 });
 
 //kostumisasi router silahkan tambahkan disini.

@@ -42,13 +42,13 @@ spl_autoload_register(function ($class) {
     include  __DIR__ . '/core/classes/' . $class . '.php';
 });
 
-require_once('app/index.php');
+
 require_once('core/Block.php');
 require_once('core/Template.php');
 require_once('core/Environment.php');
 require_once('core/functional.php');
 require_once('core/Connection.php');
-
+require_once('app/index.php');
 
 Csrf::start();
 function Init($file,  $parms = null)
