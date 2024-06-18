@@ -7,7 +7,6 @@
     "type": "project",
     "require": {
         "steampixel/simple-php-router": "^0.7.1",
-        "sergeytsalkov/meekrodb": "dev-master",
         "illuminate/database": "10.x-dev",
         "dompdf/dompdf": "dev-master",
         "guzzlehttp/guzzle": "8.0.x-dev",
@@ -16,16 +15,27 @@
         "illuminate/support": "10.x-dev",
         "nufat/cli": "dev-main",
         "illuminate/pagination": "*",
-        "catfan/medoo": "dev-master"
+        "symfony/translation": "*",
+        "fakerphp/faker": "2.0.x-dev",
+        "symfony/cache-contracts": "3.5.x-dev",
+        "symfony/event-dispatcher-contracts": "3.5.x-dev",
+        "symfony/deprecation-contracts": "3.5.x-dev",
+        "symfony/http-client-contracts": "3.5.x-dev",
+        "symfony/service-contracts": "3.5.x-dev",
+        "symfony/translation-contracts": "3.5.x-dev"
     },
     "autoload": {
         "files": [
-            "helper/function.php"
+            "helper/index.php"
+            
         ],
         "psr-4": {
             "App\\Model\\": "app/Model/",
             "App\\Helper\\": "helper/class/"
-        }
+        },
+        "classmap": [
+            "helper/"
+        ]
     },
     "authors": [
         {
