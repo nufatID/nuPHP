@@ -1,0 +1,19 @@
+{
+    "name": "nufat/nutemplete",
+    "description": "untuk templete nuphp",
+    "type": "library",
+    "license": "mit",
+    "autoload": {
+         "files": ["src/phpqrcode/qrlib.php"],
+        "psr-4": {
+            "Nufat\\Nutemplete\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "nufat.id"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

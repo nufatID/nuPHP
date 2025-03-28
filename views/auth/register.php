@@ -1,6 +1,6 @@
 <?php
 
-$auth = new Auth(false);
+$auth = new Auth(true);
 
 if (isset($_SESSION['login'])) {
     header("location: " . getBaseUrl());

@@ -1,5 +1,12 @@
 <?php
 
+use App\Core\Oldata;
+
+function now()
+{
+    return date('Y-m-d H:i:s');
+}
+
 function getBaseUrl()
 {
     $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
@@ -17,35 +24,28 @@ function getAppVersion()
 }
 function View($file, $data = [])
 {
-    $theme = new SimpleTemplateEngine\Environment('views');
-    echo $theme->render($file . '.php', $data);
+    $theme = new \Nufat\Nutemplete\Render(__DIR__ . '/../views');
+    echo $theme->render($file . '.nu.php', $data);
 }
-function CetakInit($file)
+function Element($file, $data = [])
 {
-    $theme = new SimpleTemplateEngine\Environment('views');
-    $data['old']  = Oldata::get();
-    echo $theme->render($file . '.php', $data);
+    // Naik satu folder dari direktori saat ini
+    $parentDir = dirname(__DIR__);
+    $theme = new \Nufat\Nutemplete\Render($parentDir . '/resource/element');
+    echo $theme->render($file . '.nu.php', $data);
 }
-function CetakInitf($file, $folder, $p1 = null, $p2 = null, $p3 = null)
+function response($status, $data)
 {
-
-    $theme = new SimpleTemplateEngine\Environment('views');
-
-    $data['p1'] = $p1;
-    $data['p2'] = $p2;
-    $data['p3'] = $p3;
-    $data['get']  = $_GET;
-    $data['old']  = Oldata::get();
-    echo $theme->render($folder . '/' . $file . '.php', $data);
+    header("Content-Type: application/json");
+    http_response_code($status);
+    echo json_encode(['data' => $data]);
 }
 
-function response($status,  $data)
+function res($status, $data)
 {
-    header("Content-Type:application/json");
-    header("HTTP/1.1 " . $status);
-    $response['data'] = $data;
-    $json_response = json_encode($data);
-    echo $data;
+    header("Content-Type: application/json");
+    http_response_code($status);
+    echo json_encode(['data' => $data]);
 }
 
 function textToSlug($text = '')

@@ -1,4 +1,7 @@
 <?php
+
+use App\Core\Controller;
+
 class kirim extends Controller
 {
      public function index()

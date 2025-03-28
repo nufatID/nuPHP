@@ -1,0 +1,1 @@
+<?= $this->Qrcode('$qrcode_text'); ?>

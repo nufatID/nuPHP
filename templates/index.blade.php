@@ -16,7 +16,7 @@
             <div class="branding">
                 <h1 class="logo">
                     <span aria-hidden="true" class="icon_documents_alt icon"></span>
-                    <span class="text-highlight">{{$slug}}</span><span class="text-bold">Framework</span>
+                    <span class="text-highlight">{{$name}}</span><span class="text-bold">Framework</span>
                 </h1>
             </div>
             <!--//branding-->

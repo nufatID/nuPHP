@@ -1,43 +1,57 @@
 <?php
 
-use App\Model\User;
+namespace App\Core;
 
+use App\Model\User;
 
 class Auth
 {
     public $auth = AUTH;
+
     public function __construct($re = null)
     {
-
         if (isset($_POST['auth_login']) && $_POST['auth_login'] == $_SESSION['token_csrf']) {
-            $this->login($_POST["username"], $_POST['password']);
+            $remember = isset($_POST['remember']) ? true : false;
+            $this->login($_POST["username"], $_POST['password'], $remember);
             exit();
         }
 
-        $this->auth = (isset($re)) ?  $re : $this->auth;
+        // Auto-login
+        if (!isset($_SESSION['login']) && isset($_COOKIE['token_login'])) {
+            $user = User::where('token', $_COOKIE['token_login'])->first();
+            if ($user) {
+                $_SESSION['login'] = $user->id;
+                $_SESSION['login_member'] = $user->member_id;
+                $_SESSION['login_noreg'] = $user->noreg;
+                $_SESSION['login_role'] = $user->role;
+                $_SESSION['token_login'] = $_COOKIE['token_login'];
+                $this->recordLog($_COOKIE['token_login'], $user->id);
+            }
+        }
+
+        $this->auth = (isset($re)) ? $re : $this->auth;
         ($this->auth) ? $this->checklog() : '';
     }
-
-
 
     private function checklog()
     {
         if (!isset($_SESSION['login'])) {
             $this->auth = false;
-            header("location: " . getBaseUrl() . "auth/login");
+            header("Location: " . getBaseUrl() . "auth/login");
             exit();
         } else {
-            $this->checktoken();
+            $this->checkToken();
         }
     }
 
-
     public function checkToken()
     {
-        $user = user::where('token', $_SESSION['token_login'])->first();
+        $token = $_SESSION['token_login'] ?? $_COOKIE['token_login'] ?? null;
+        $user = User::where('token', $token)->first();
         if (!$user) {
             unset($_SESSION['login']);
-            header("location: " . getBaseUrl());
+            setcookie('token_login', '', time() - 3600, "/"); // Hapus cookie jika token tidak valid
+            header("Location: " . getBaseUrl());
         }
     }
 
@@ -49,21 +63,17 @@ class Auth
         return password_hash($p, PASSWORD_BCRYPT, $options);
     }
 
-
-
-
     public function logout()
     {
         unset($_SESSION['login']);
         session_unset();
         session_destroy();
-        setcookie('token_login', '', time() - 3600, "/");
+        setcookie('token_login', '', time() - 3600, "/"); // Hapus cookie
 
-        header("location: " . getBaseUrl());
+        header("Location: " . getBaseUrl());
     }
 
-
-    public function login($emailOrUsername, $password)
+    public function login($emailOrUsername, $password, $remember = false)
     {
         $user = User::where('email', $emailOrUsername)
             ->orWhere('username', $emailOrUsername)
@@ -76,20 +86,25 @@ class Auth
             $_SESSION['login_noreg'] = $user->noreg;
             $_SESSION['login_role'] = $user->role;
             $_SESSION['token_login'] = $token;
-            $_COOKIE['token_login'] = $token;
+
+            if ($remember) {
+                setcookie('token_login', $token, time() + (86400 * 30), "/"); // 30 days
+            } else {
+                setcookie('token_login', '', time() - 3600, "/"); // Hapus cookie jika tidak diingat
+            }
+
             $this->recordLog($token, $user->id);
 
             if (isset($_SESSION['oldpage'])) {
                 header("Location: " . $_SESSION['oldpage']);
             } else {
-                header("location: " . getBaseUrl());
+                header("Location: " . getBaseUrl());
             }
             exit();
         } else {
             $this->backto();
         }
     }
-
 
     private function recordLog($token, $id)
     {
@@ -100,26 +115,25 @@ class Auth
             $user->save();
         }
     }
+
     public function backto()
     {
         $data['err'] = Alert::SetAlert('danger', 'Username atau Password Salah...!!!');
         Oldata::set();
-        header("location: " . getBaseUrl() . "auth/login?back");
+        header("Location: " . getBaseUrl() . "auth/login?back");
         exit();
     }
+
     public function backtoR()
     {
         $data['err'] = Alert::SetAlert('danger', 'Username atau Password Salah...!!!');
         Oldata::set();
-        header("location: " . getBaseUrl() . "auth/login");
+        header("Location: " . getBaseUrl() . "auth/login");
         exit();
     }
 
     public function isLoggedIn()
     {
-        if (isset($_SESSION['login'])) {
-
-            return true;
-        }
+        return isset($_SESSION['login']);
     }
 }

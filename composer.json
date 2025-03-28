@@ -13,7 +13,7 @@
         "firebase/php-jwt": "dev-main",
         "illuminate/view": "10.x-dev",
         "illuminate/support": "10.x-dev",
-        "nufat/cli": "dev-main",
+        "catfan/medoo": "dev-master",
         "illuminate/pagination": "*",
         "symfony/translation": "*",
         "fakerphp/faker": "2.0.x-dev",
@@ -22,16 +22,24 @@
         "symfony/deprecation-contracts": "3.5.x-dev",
         "symfony/http-client-contracts": "3.5.x-dev",
         "symfony/service-contracts": "3.5.x-dev",
-        "symfony/translation-contracts": "3.5.x-dev"
+        "symfony/translation-contracts": "3.5.x-dev",
+        "lasserafn/php-initial-avatar-generator": "dev-master",
+        "nufat/cli": "dev-main",
+        "nufat/nutemplete": "dev-main",
+        "midtrans/midtrans-php": "dev-master",
+        "vlucas/phpdotenv": "^5.6@dev",
+        "phpoffice/phpspreadsheet": "dev-master",
+        "phpmailer/phpmailer": "dev-master"
     },
     "autoload": {
         "files": [
             "helper/index.php"
-            
         ],
         "psr-4": {
             "App\\Model\\": "app/Model/",
-            "App\\Helper\\": "helper/class/"
+             "App\\Models\\": "app/models/",
+            "App\\Helper\\": "helper/class/",
+            "App\\Core\\": "core/classes/"
         },
         "classmap": [
             "helper/"

@@ -1,0 +1,20 @@
+# Ignoring vendor directory
+vendor/
+
+# Ignoring Composer lock file
+composer.lock
+
+# Ignoring other common files/directories
+.DS_Store
+Thumbs.db
+
+# Ignore test results
+coverage/
+phpunit-result.cache
+
+# Ignore IDE specific files
+.idea/
+*.iml
+
+# Ignore node_modules if you have any JS dependencies
+node_modules/

@@ -1,6 +1,22 @@
 <?php
+
+namespace App\core;
+
 class Csrf
 {
+
+
+    public function __construct()
+    {
+        if (isset($_SESSION['token_login'])) {
+            $authToken = $_SESSION['token_login'];
+
+            header('Authorization: Apikey ' .  $authToken);
+        } else {
+            header('WWW-Authenticate: Basic realm="My Realm"');
+            http_response_code(401);
+        }
+    }
     public static function start()
     {
         if (!isset($_SESSION['token_csrf'])) {

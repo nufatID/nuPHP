@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Core;
+
 class Oldata
 {
     private $data;

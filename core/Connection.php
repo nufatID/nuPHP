@@ -9,7 +9,6 @@ $capsule->addConnection([
     'database' => __DIR__ . '/database/database.sqlite',
     'prefix' => '',
 ]);
-
 $capsule->addConnection([
     'driver' => 'mysql',
     'host' => 'localhost',
@@ -31,5 +30,7 @@ $capsule->addConnection([
     'collation' => 'utf8mb4_unicode_ci', // tambahkan collation untuk menghindari masalah karakter
 ], 'auth'); // Nama koneksi
 
+
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
+//$capsule->table('imgclamps')->truncate();

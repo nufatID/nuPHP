@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Core;
+
 class Alert
 {
     public static function SetAlert($a, $b)
