@@ -5,6 +5,11 @@
     "homepage": "https://webded.nufat.id",
     "license": "MIT",
     "type": "project",
+    "scripts": {
+    "post-create-project-cmd": [
+        "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ]
+},
     "require": {
         "steampixel/simple-php-router": "^0.7.1",
         "illuminate/database": "10.x-dev",
@@ -29,7 +34,8 @@
         "midtrans/midtrans-php": "dev-master",
         "vlucas/phpdotenv": "^5.6@dev",
         "phpoffice/phpspreadsheet": "dev-master",
-        "phpmailer/phpmailer": "dev-master"
+        "phpmailer/phpmailer": "dev-master",
+        "picqer/php-barcode-generator": "dev-main"
     },
     "autoload": {
         "files": [
