@@ -26,7 +26,9 @@
         "phpoffice/phpspreadsheet": "^2.0 || ^1.29",
         "fakerphp/faker": "^1.23",
         "lasserafn/php-initial-avatar-generator": "^4.0",
-        "picqer/php-barcode-generator": "^2.4 || ^3.0"
+        "picqer/php-barcode-generator": "^2.4 || ^3.0",
+        "nufat/cli": "*",
+        "nufat/nutemplete": "*"
     },
     "autoload": {
         "files": [
