@@ -86,11 +86,11 @@ if (!function_exists('InitFolder')) {
 
 // Custom Routes
 Route::add('/', function () {
-    if (function_exists('tolink')) {
-        tolink('home');
-    } else {
-        View('home');
-    }
+    View('welcome', ['title' => 'Selamat Datang di nuPHP Framework v2.0']);
+});
+
+Route::add('/welcome', function () {
+    View('welcome', ['title' => 'Selamat Datang di nuPHP Framework v2.0']);
 });
 
 // Auto Router
