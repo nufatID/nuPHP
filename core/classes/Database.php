@@ -182,6 +182,6 @@ class Database extends Pagination
     //pagination end
     public function RowCount()
     {
-        $this->stmt->rowCount();
+        return $this->stmt ? $this->stmt->rowCount() : 0;
     }
 }

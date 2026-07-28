@@ -4,33 +4,28 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 $capsule = new Capsule;
 
-$capsule->addConnection([
-    'driver' => 'sqlite',
-    'database' => __DIR__ . '/database/database.sqlite',
-    'prefix' => '',
-]);
-$capsule->addConnection([
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'database' => 'bunp2332_wp812',
-    'username' => 'bunp2332_wp812',
-    'password' => '6USS[!5f4p',
-    'charset' => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci', // tambahkan collation untuk menghindari masalah karakter
-    'prefix' => 'wpw6_',
-], 'mysqlwordpress'); // Nama koneksi
+$driver = DB_DRIVER;
 
-$capsule->addConnection([
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'database' => 'bunp2332_auth',
-    'username' => 'DB_USER_KTA',
-    'password' => 'DB_PASS_KTA',
-    'charset' => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci', // tambahkan collation untuk menghindari masalah karakter
-], 'auth'); // Nama koneksi
-
+if ($driver === 'sqlite') {
+    $sqlitePath = env('DB_DATABASE', __DIR__ . '/database/database.sqlite');
+    $capsule->addConnection([
+        'driver'   => 'sqlite',
+        'database' => $sqlitePath,
+        'prefix'   => '',
+    ]);
+} else {
+    $capsule->addConnection([
+        'driver'    => DB_DRIVER,
+        'host'      => DB_HOST,
+        'port'      => DB_PORT,
+        'database'  => DB_NAME,
+        'username'  => DB_USER,
+        'password'  => DB_PASS,
+        'charset'   => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'prefix'    => '',
+    ]);
+}
 
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
-//$capsule->table('imgclamps')->truncate();

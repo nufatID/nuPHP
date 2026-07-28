@@ -1,187 +1,200 @@
-# Nuphp Framework MVC and NoMVC
+# nuPHP Framework v2.0 🚀
 
-Bootstrap 5 dan PHP untuk membuat website dengan cepat dan mudah
+[![PHP Version](https://img.shields.io/badge/PHP-%5E8.1%20%7C%20%5E8.2%20%7C%20%5E8.3-blue.svg)](https://php.net)
+[![Framework Version](https://img.shields.io/badge/nuPHP-v2.0.0-success.svg)](https://github.com/nufatID/nuPHP)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-Designed with for developers
+**nuPHP** adalah PHP Framework MVC (dan NoMVC) yang ringan, super cepat, fleksibel, serta didesain untuk mempercepat pembuatan aplikasi web modern tanpa *overhead* berlebihan.
 
-# CARA INSTALL NUPHP
+---
 
-## Install dengan COMPOSER Mulailah membangun website dengan mudah dan cepat!
+## 🌟 Fitur Utama
 
-Gunkan [COMMPOSER](https://getcomposer.org/) to install NuPHP Framework.
+- ⚡ **Lightweight & Super Fast:** Beban runtime minimal dengan performa tinggi.
+- 🗄️ **Multi-ORM Support:** Mendukung **Illuminate Eloquent ORM** (Laravel Database) dan **Medoo Database Wrapper** secara bawaan.
+- 🎨 **Blade & Native View Engine:** Didukung oleh **Blade Compiler Engine** untuk tampilan yang fleksibel.
+- 🛠️ **Built-in CLI Tool (`php nu`):** Generator controller/model dan development server bawaan.
+- 🔄 **Smart Auto-Routing:** Routing dinamis berbasis struktur controller & view, serta opsi kustomisasi rute manual.
+- 🛡️ **Environment & CSRF Protection:** Manajemen `.env` aman dengan perlindungan token CSRF.
+- 📦 **PSR-4 Compliant:** Mengikuti standar autoloading modern PHP.
+
+---
+
+## 📋 Persyaratan System
+
+- **PHP:** `^8.1`, `^8.2`, atau `^8.3`
+- **Composer:** Versi 2.x
+- **Ekstensi PHP:** `PDO`, `pdo_mysql` / `pdo_sqlite`, `mbstring`, `json`, `fileinfo`
+
+---
+
+## 🚀 Cara Instalasi
+
+### 1. Menggunakan Composer
 
 ```bash
-composer create-project nufat/nuphp
+composer create-project nufat/nuphp nama-proyek
 ```
 
-## Install dengan GIT Mulailah membangun website dengan mudah dan cepat!
-
-Gunkan Git Clone [git](https://github.com/nufatID/nuPHP.git) to install NuPHP Framework.
+### 2. Menggunakan Git Clone
 
 ```bash
-git clone https://github.com/nufatID/nuPHP.git
+git clone https://github.com/nufatID/nuPHP.git nama-proyek
+cd nama-proyek
+composer install
 ```
 
-# USING MVC
+---
 
-## Usage Model -> model.php
+## ⚙️ Konfigurasi Environment
+
+Salin file `.env.example` menjadi `.env` lalu sesuaikan konfigurasi database dan aplikasi:
+
+```bash
+cp .env.example .env
+```
+
+Isi file `.env`:
+
+```env
+APP_ENV=development
+APP_DEBUG=true
+APP_KEY=base64:nuPHPSecretKey12345678901234567890
+
+BASE_DIR=/
+DB_DRIVER=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASS=secret
+DB_NAME=nuphp
+
+AUTH=false
+```
+
+---
+
+## 💻 Penggunaan CLI (`php nu`)
+
+Framework **nuPHP** dilengkapi skrip CLI interaktif untuk mempermudah alur kerja pengembangan:
+
+```bash
+# Menjalankan local development server (default port 8000)
+php nu serve 8000
+
+# Membuat Controller baru di app/Controllers/
+php nu make:controller UserController
+
+# Membuat Model Eloquent baru di app/Models/
+php nu make:model User
+
+# Menampilkan versi nuPHP Framework
+php nu version
+```
+
+---
+
+## 📁 Struktur Direktori
+
+```text
+nuPHP/
+├── app/
+│   ├── Controllers/     # Berkas Controller aplikasi
+│   ├── Models/          # Berkas Model Eloquent / PDO
+│   ├── Routes.php       # Konfigurasi Routing Aplikasi
+│   └── index.php        # Helper aplikasi
+├── assets/              # Static Assets (CSS, JS, Images)
+├── cache/               # Cache compiled views
+├── core/
+│   ├── classes/         # Core helper classes (Database, Auth, CSRF, dll)
+│   ├── config.php       # Inisialisasi konfigurasi & env
+│   └── Connection.php   # Bootstrapper database connection
+├── helper/              # Custom function helpers
+├── resource/            # Components & elements
+├── templates/           # Layout & template Blade
+├── views/               # File tampilan view (.nu.php)
+├── .env.example         # Template konfigurasi environment
+├── composer.json        # Autoload & dependensi Composer
+├── index.php            # Entry point aplikasi
+└── nu                   # Executable CLI tool nuPHP
+```
+
+---
+
+## 📖 Panduan Penggunaan
+
+### 1. Membuat Model (Eloquent)
+
+Buat model di `app/Models/User.php`:
 
 ```php
-<?php
-class UserModel extends Database
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
 {
-    protected $table = 'pegawai';
+    protected $table = 'users';
+    protected $guarded = [];
 }
 ```
 
-## Usage View -> view.php
+### 2. Membuat Controller
+
+Buat controller di `app/Controllers/UserController.php`:
 
 ```php
-<?php $this->extend("layout/layout.php") ?>
+use App\Models\User;
 
-
-<div class="container-fluid mt-2">
-
-    <a href="<?= getBaseUrl(); ?>/absensi/insert" class="btn btn-primary">tambah</a>
-    <div class="row m-2">
-        <div class="col-sm-4 mx-auto text-center">
-            <?= $data->pagelist(); ?></div>
-
-    </div>
-    <div class="container-fluid">
-        <?= $data->getTablePage(); ?>
-    </div>
-
-    <div class="row m-2">
-        <div class="col-sm-4 mx-auto text-center">
-            <?= $data->pagelist(); ?></div>
-
-    </div>
-</div>
-```
-
-## Usage Controller -> Controler.php
-
-```php
-<?php
-
-class Absensi extends Controller
+class UserController
 {
-
     public function index()
     {
-        $model = $this->model('UserModel');
-        $model->set_pagination(5);
-        $model->jarak = 1;
-        $adrow = [
-            "Detail" => "<a href='" . getBaseUrl() . "/absensi/detail/{{id}}' class='btn btn-primary' id='{{id}}'>Detail</a>",
-            "Edit" => "<a href='" . getBaseUrl() . "/absensi/edit/{{id}}' type='button' class='btn btn-warning'>Edit</a>",
-            "Delete" => "<a href='" . getBaseUrl() . "/absensi/hapus/{{id}}' onclick='return confirm('Anda Yakin??');' type='button' class='btn btn-danger'>Delete</a>"
-        ];
-        $model->Add_row($adrow);
-        $data['data'] = $model;
-        View('absensi/index', $data);
+        $users = User::all();
+        View('users/index', ['users' => $users]);
+    }
+
+    public function detail($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            header('HTTP/1.0 404 Not Found');
+            return View('404');
+        }
+        View('users/detail', ['user' => $user]);
     }
 }
 ```
 
-# USING NON MVC
+### 3. Konfigurasi Route Custom
 
-## Usage Model -> model.php
-
-```php
-<?php $this->extend('layout/layout.php'); ?>
-
-
-<div class="page-wrapper">
-
-    <!-- ******Header****** -->
-    <header class="header text-center">
-        <div class="container">
-            <div class="branding">
-                <h1 class="logo">
-                    <span aria-hidden="true" class="fas fa-exclamation-circle" style="font-size: xxx-large;"></span>
-                    <p>
-                        <span class="text-highlight">Error </span>
-                    </p>
-                    <p><span class="text-bold">404</span>
-                    </p>
-                </h1>
-            </div>
-            <!--//branding-->
-            <div class="tagline">
-                <h1 class="logo text-warning">MAAF ...!! <br>HALAMAN TIDAK DITEMUKAN</h1>
-
-            </div>
-
-
-
-        </div>
-        <!--//container-->
-    </header>
-    <!--//header-->
-
-</div>
-```
-
-# USING Auto Routes or Setting Kostum
-
-## Usage Routes.php
+Tambahkan rute kustom di `app/Routes.php`:
 
 ```php
-<?php
-
 use Steampixel\Route;
 
-define('BASEPATH', BASE_URL);
-
-Route::add('/', function () {
-    View('index');
-});
-//kostumisasi router silahkan tambahkan disini.
-//mulai kostumisasi router
-Route::add('/halaman', function () {
-    View('home');
+// Explicit Custom Route
+Route::add('/dashboard', function () {
+    View('dashboard');
 });
 
-
-//end kostumisasi router
-//Auto Router
-Route::add('/(.*)/(.*)/(.*)/(.*)/(.*)', function ($folder, $file, $p1, $p2, $p3) {
-    InitFolder($file, $folder, $p1, $p2, $p3);
-}, ['get', 'post']);
-Route::add('/(.*)/(.*)/(.*)/(.*)', function ($folder, $file, $p1, $p2) {
-    InitFolder($file, $folder, $p1, $p2);
-}, ['get', 'post']);
-Route::add('/(.*)/(.*)/(.*)', function ($folder, $file, $param) {
-    InitFolder($file, $folder, $param);
-}, ['get', 'post']);
-Route::add('/(.*)/(.*)', function ($folder, $file) {
-    InitFolder($file, $folder);
-}, ['get', 'post']);
-Route::add('/(.*)', function ($file) {
-    Init($file);
-}, ['get', 'post']);
-
-//404 Router
-Route::pathNotFound(function ($path) {
-    header('HTTP/1.0 404 Not Found');
-    View('404');
+// Route dengan controller & method
+Route::add('/user/profile/([0-9]+)', function ($id) {
+    $controller = new UserController();
+    $controller->detail($id);
 });
-Route::run(BASEPATH);
-
 ```
 
-## Contributing
+---
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+## 🤝 Kontribusi
 
-Please make sure to update tests as appropriate.
+Pull request sangat diterima! Untuk perubahan besar, silakan buka *issue* terlebih dahulu untuk mendiskusikan apa yang ingin Anda ubah.
 
-## Kunjungi
+---
 
-[https://webdev.nufat.id/](https://webdev.nufat.id/)
+## 🌐 Informasi & Lisensi
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+- **Website:** [https://webdev.nufat.id/](https://webdev.nufat.id/)
+- **Repository:** [https://github.com/nufatID/nuPHP](https://github.com/nufatID/nuPHP)
+- **License:** [MIT License](LICENSE)

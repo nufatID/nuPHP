@@ -2,40 +2,107 @@
 
 use Steampixel\Route;
 
-define('BASEPATH', BASE_DIR);
+if (!defined('BASEPATH')) {
+    define('BASEPATH', defined('BASE_DIR') ? BASE_DIR : '/');
+}
 
+/**
+ * Render a View or return 404
+ */
+if (!function_exists('newview')) {
+    function newview($path, $params = [])
+    {
+        $viewFile = __DIR__ . '/../views/' . $path . '.nu.php';
+
+        if (file_exists($viewFile)) {
+            View($path, $params);
+        } else {
+            header('HTTP/1.0 404 Not Found');
+            View('404');
+        }
+    }
+}
+
+/**
+ * Automatic Route Resolver for Controllers and Views
+ */
+if (!function_exists('autoloadRoute')) {
+    function autoloadRoute($pathParts)
+    {
+        $controllerBaseDirs = [__DIR__ . '/Controllers', __DIR__ . '/controller'];
+        $maxDepth = count($pathParts);
+
+        for ($i = 0; $i < $maxDepth; $i++) {
+            $currentPath = implode('/', array_slice($pathParts, 0, $i + 1));
+
+            foreach ($controllerBaseDirs as $controllerBaseDir) {
+                $controllerFilePath = $controllerBaseDir . '/' . $currentPath . '.php';
+                if (file_exists($controllerFilePath)) {
+                    require_once $controllerFilePath;
+                    $className = ucfirst($pathParts[$i]);
+                    $methodName = $pathParts[$i + 1] ?? 'index';
+
+                    if (class_exists($className)) {
+                        $controller = new $className();
+                        if (method_exists($controller, $methodName)) {
+                            $params = array_slice($pathParts, $i + 2);
+                            call_user_func_array([$controller, $methodName], $params);
+                            return;
+                        } elseif (method_exists($controller, 'index')) {
+                            $params = array_slice($pathParts, $i + 1);
+                            call_user_func_array([$controller, 'index'], $params);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            // Check view directory
+            $viewPath = __DIR__ . '/../views/' . $currentPath . '.nu.php';
+            if (file_exists($viewPath)) {
+                $params = array_slice($pathParts, $i + 1);
+                newview($currentPath, $params);
+                return;
+            }
+        }
+
+        // If no route matched
+        header('HTTP/1.0 404 Not Found');
+        View('404');
+    }
+}
+
+if (!function_exists('Init')) {
+    function Init($file, ...$params) {
+        autoloadRoute(array_merge([$file], $params));
+    }
+}
+
+if (!function_exists('InitFolder')) {
+    function InitFolder($file, $folder, ...$params) {
+        autoloadRoute(array_merge([$folder, $file], $params));
+    }
+}
+
+// Custom Routes
 Route::add('/', function () {
-    tolink('home');
+    if (function_exists('tolink')) {
+        tolink('home');
+    } else {
+        View('home');
+    }
 });
 
-//kostumisasi router silahkan tambahkan disini.
-//mulai kostumisasi router
-// Route::add('/home', function () {
-//     View('home');
-// });
+// Auto Router
+Route::add('/(.*)', function ($fullPath) {
+    $pathParts = explode('/', trim($fullPath, '/'));
+    autoloadRoute($pathParts);
+}, ['get', 'post', 'put', 'delete']);
 
-
-//end kostumisasi router
-//Auto Router 
-Route::add('/(.*)/(.*)/(.*)/(.*)/(.*)', function ($folder, $file, $p1, $p2, $p3) {
-    InitFolder($file, $folder, $p1, $p2, $p3);
-}, ['get', 'post']);
-Route::add('/(.*)/(.*)/(.*)/(.*)', function ($folder, $file, $p1, $p2) {
-    InitFolder($file, $folder, $p1, $p2);
-}, ['get', 'post']);
-Route::add('/(.*)/(.*)/(.*)', function ($folder, $file, $param) {
-    InitFolder($file, $folder, $param);
-}, ['get', 'post']);
-Route::add('/(.*)/(.*)', function ($folder, $file) {
-    InitFolder($file, $folder);
-}, ['get', 'post']);
-Route::add('/(.*)', function ($file) {
-    Init($file);
-}, ['get', 'post']);
-
-//404 Router 
+// 404 Router 
 Route::pathNotFound(function ($path) {
     header('HTTP/1.0 404 Not Found');
     View('404');
 });
+
 Route::run(BASEPATH);
