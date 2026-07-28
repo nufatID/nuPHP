@@ -1,9 +1,8 @@
 .env
-log/*
-
+/.env
 vendor/
 /vendor/
-/.env
+cache/*
+!cache/.gitkeep
 log/
-
-
+log/*
