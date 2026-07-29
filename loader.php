@@ -24,6 +24,9 @@ if (defined('APP_DEBUG') && APP_DEBUG) {
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
     error_reporting(E_ALL);
+    if (class_exists('App\Core\Debugbar')) {
+        App\Core\Debugbar::start();
+    }
 } else {
     ini_set('display_errors', '0');
     error_reporting(0);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "212b8a60db65736bd7f378125700a42f",
+    "content-hash": "dd483700a6cae9a0732a23ce0d639b96",
     "packages": [
         {
             "name": "brick/math",
@@ -2485,6 +2485,71 @@
             "time": "2026-07-09T18:23:49+00:00"
         },
         {
+            "name": "nufat/cli",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "/home/nunu/nufat-cli",
+                "reference": "ff01da7045a730853f8e7e85cc49718e37a22451"
+            },
+            "require": {
+                "php": "^8.1 || ^8.2 || ^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nufat\\Cli\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nufat.id",
+                    "email": "admin@nufat.id"
+                }
+            ],
+            "description": "nuPHP CLI Tool for Code Generation, Server, and Database Management",
+            "transport-options": {
+                "relative": false
+            }
+        },
+        {
+            "name": "nufat/nutemplete",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "/home/nunu/Nutemplete",
+                "reference": "c519b9430818ebdc67bb859a138e3441a0a9bb8a"
+            },
+            "require": {
+                "php": "^8.1 || ^8.2 || ^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/phpqrcode/qrlib.php"
+                ],
+                "psr-4": {
+                    "Nufat\\Nutemplete\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nufat.id",
+                    "email": "admin@nufat.id"
+                }
+            ],
+            "description": "Fast & Lightweight PHP Template Engine with Blade Directives & HTML Component Support",
+            "transport-options": {
+                "relative": false
+            }
+        },
+        {
             "name": "overtrue/pinyin",
             "version": "4.1.0",
             "source": {
@@ -4415,7 +4480,10 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "nufat/cli": 20,
+        "nufat/nutemplete": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

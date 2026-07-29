@@ -1,19 +1,20 @@
-# nuPHP Framework v2.0 🚀
+# nuPHP Framework v3.0.0 🚀
 
 [![PHP Version](https://img.shields.io/badge/PHP-%5E8.1%20%7C%20%5E8.2%20%7C%20%5E8.3-blue.svg)](https://php.net)
-[![Framework Version](https://img.shields.io/badge/nuPHP-v2.0.0-success.svg)](https://github.com/nufatID/nuPHP)
+[![Framework Version](https://img.shields.io/badge/nuPHP-v3.0.0-success.svg)](https://github.com/nufatID/nuPHP)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 **nuPHP** adalah PHP Framework MVC (dan NoMVC) yang ringan, super cepat, fleksibel, serta didesain untuk mempercepat pembuatan aplikasi web modern tanpa *overhead* berlebihan.
 
 ---
 
-## 🌟 Fitur Utama
+## 🌟 Fitur Utama (v3.0.0)
 
 - ⚡ **Lightweight & Super Fast:** Beban runtime minimal dengan performa tinggi.
 - 🗄️ **Multi-ORM Support:** Mendukung **Illuminate Eloquent ORM** (Laravel Database) dan **Medoo Database Wrapper** secara bawaan.
-- 🎨 **Blade & Native View Engine:** Didukung oleh **Blade Compiler Engine** untuk tampilan yang fleksibel.
-- 🛠️ **Built-in CLI Tool (`php nu`):** Generator controller/model dan development server bawaan.
+- 🎨 **Nutemplete & Blade View Engine:** Didukung oleh **Nutemplete v3.0.0** (dengan direktif `@auth`, `@guest`, `@json`, `@asset`, dan `<nu-component>`).
+- 🛠️ **Built-in CLI Tool (`php nu` v3.0.0):** Generator controller/model, route inspector (`route:list`), konsol interaktif (`tinker`), serta scaffolding UI auth (`ui:auth`).
+- 📊 **Mini Debugbar:** Floating Dev Toolbar otomatis saat `APP_DEBUG=true` (cek execution time, memory peak, & SQL query count).
 - 🔄 **Smart Auto-Routing:** Routing dinamis berbasis struktur controller & view, serta opsi kustomisasi rute manual.
 - 🛡️ **Environment & CSRF Protection:** Manajemen `.env` aman dengan perlindungan token CSRF.
 - 📦 **PSR-4 Compliant:** Mengikuti standar autoloading modern PHP.
