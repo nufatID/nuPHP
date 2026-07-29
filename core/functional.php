@@ -40,6 +40,13 @@ if (!function_exists('View')) {
     }
 }
 
+if (!function_exists('blade')) {
+    function blade($file, $data = [])
+    {
+        views($file, $data);
+    }
+}
+
 if (!function_exists('Element')) {
     function Element($file, $data = [])
     {
