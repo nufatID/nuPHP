@@ -34,18 +34,70 @@ function Element($file, $data = [])
     $theme = new \Nufat\Nutemplete\Render($parentDir . '/resource/element');
     echo $theme->render($file . '.nu.php', $data);
 }
-function response($status, $data)
+function response($data = [], $status = 200)
 {
+    if (is_numeric($data) && !empty($status)) {
+        $swap = $status;
+        $status = $data;
+        $data = $swap;
+    }
     header("Content-Type: application/json");
     http_response_code($status);
-    echo json_encode(['data' => $data]);
+    echo json_encode(is_array($data) ? $data : ['data' => $data], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    exit;
 }
 
 function res($status, $data)
 {
-    header("Content-Type: application/json");
-    http_response_code($status);
-    echo json_encode(['data' => $data]);
+    return response($data, $status);
+}
+
+function request($key = null, $default = null)
+{
+    if ($key === null) {
+        return array_merge($_GET, $_POST);
+    }
+    return $_REQUEST[$key] ?? $_POST[$key] ?? $_GET[$key] ?? $default;
+}
+
+function redirect($url)
+{
+    $baseUrl = function_exists('getBaseUrl') ? getBaseUrl() : '';
+    if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+        $url = rtrim($baseUrl, '/') . '/' . ltrim($url, '/');
+    }
+    header('Location: ' . $url);
+    exit;
+}
+
+function session($key = null, $default = null)
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if ($key === null) {
+        return $_SESSION;
+    }
+    if (is_array($key)) {
+        foreach ($key as $k => $v) {
+            $_SESSION[$k] = $v;
+        }
+        return true;
+    }
+    return $_SESSION[$key] ?? $default;
+}
+
+function env($key, $default = null)
+{
+    return $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key) ?: $default;
+}
+
+function db()
+{
+    if (class_exists('\Illuminate\Database\Capsule\Manager')) {
+        return \Illuminate\Database\Capsule\Manager::class;
+    }
+    return null;
 }
 
 function textToSlug($text = '')
@@ -55,6 +107,6 @@ function textToSlug($text = '')
     $text = preg_replace("/[^a-zA-Z0-9\-\s]+/", "", $text);
     $text = strtolower(trim($text));
     $text = str_replace(' ', '-', $text);
-    $text = $text_ori = preg_replace('/\-{2,}/', '-', $text);
+    $text = preg_replace('/\-{2,}/', '-', $text);
     return $text;
 }
