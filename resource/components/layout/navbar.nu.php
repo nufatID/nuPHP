@@ -66,7 +66,7 @@
 
                             </div>
                         </a>
-                        @end
+                        @endislogin
                         <nu-card-profilmenu></nu-card-profilmenu>
 
 
