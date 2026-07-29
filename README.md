@@ -1,14 +1,14 @@
-# nuPHP Framework v3.0.1 🚀
+# nuPHP Framework v3.0.4 🚀
 
 [![PHP Version](https://img.shields.io/badge/PHP-%5E8.1%20%7C%20%5E8.2%20%7C%20%5E8.3-blue.svg)](https://php.net)
-[![Framework Version](https://img.shields.io/badge/nuPHP-v3.0.1-success.svg)](https://github.com/nufatID/nuPHP)
+[![Framework Version](https://img.shields.io/badge/nuPHP-v3.0.4-success.svg)](https://github.com/nufatID/nuPHP)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 **nuPHP** adalah PHP Framework MVC (dan NoMVC) yang ringan, super cepat, fleksibel, serta didesain untuk mempercepat pembuatan aplikasi web modern tanpa *overhead* berlebihan.
 
 ---
 
-## 🌟 Fitur Utama (v3.0.1)
+## 🌟 Fitur Utama (v3.0.4)
 
 - ⚡ **Lightweight & Super Fast:** Beban runtime minimal dengan performa tinggi.
 - 🗄️ **Multi-ORM Support:** Mendukung **Illuminate Eloquent ORM** (Laravel Database) dan **Medoo Database Wrapper** secara bawaan.
