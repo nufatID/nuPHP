@@ -186,6 +186,17 @@ Route::add('/user/profile/([0-9]+)', function ($id) {
 });
 ```
 
+### 4. Helper Global Bawaan
+
+nuPHP v3.0.0 dilengkapi helper global serbaguna:
+
+- `request($key = null, $default = null)` — Mengambil data input request GET/POST.
+- `session($key = null, $default = null)` — Membaca/menyimpan data session secara instan.
+- `redirect($url)` — Redirect URL dengan penanganan base URL otomatis.
+- `response($data, $status = 200)` — Mengirimkan JSON response dengan header HTTP.
+- `env($key, $default = null)` — Membaca nilai dari konfigurasi `.env`.
+- `db()` — Mengakses kelas instans Eloquent DB Capsule.
+
 ---
 
 ## 🤝 Kontribusi
