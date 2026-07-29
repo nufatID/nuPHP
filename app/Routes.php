@@ -107,12 +107,22 @@ if (!function_exists('InitFolder')) {
 
 // Custom Routes
 Route::add('/', function () {
-    View('welcome', ['title' => 'Selamat Datang di nuPHP Framework v2.0']);
+    View('welcome', ['title' => 'Selamat Datang di nuPHP Framework v3.0']);
 });
 
 Route::add('/welcome', function () {
-    View('welcome', ['title' => 'Selamat Datang di nuPHP Framework v2.0']);
+    View('welcome', ['title' => 'Selamat Datang di nuPHP Framework v3.0']);
 });
+
+// Auto-load Modular Sub-Router Files (app/router/*.php or router/*.php or app/routes/*.php)
+$routerDirs = [__DIR__ . '/router', __DIR__ . '/routes', dirname(__DIR__) . '/router'];
+foreach ($routerDirs as $routerDir) {
+    if (is_dir($routerDir)) {
+        foreach (glob($routerDir . '/*.php') as $routerFile) {
+            require_once $routerFile;
+        }
+    }
+}
 
 // Auto Router
 Route::add('/(.*)', function ($fullPath) {
