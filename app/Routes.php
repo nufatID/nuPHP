@@ -3,7 +3,8 @@
 use Steampixel\Route;
 
 if (!defined('BASEPATH')) {
-    define('BASEPATH', defined('BASE_DIR') ? BASE_DIR : '/');
+    $base = defined('BASE_DIR') ? BASE_DIR : '/';
+    define('BASEPATH', (empty($base) || str_contains($base, '/..')) ? '/' : $base);
 }
 
 /**

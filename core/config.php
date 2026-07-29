@@ -24,7 +24,7 @@ if (!function_exists('env')) {
     }
 }
 
-if (!defined('BASE_DIR')) define('BASE_DIR', env('BASE_DIR', __DIR__ . '/..'));
+if (!defined('BASE_DIR')) define('BASE_DIR', env('BASE_DIR', '/'));
 if (!defined('APP_ENV')) define('APP_ENV', env('APP_ENV', 'development'));
 if (!defined('APP_DEBUG')) define('APP_DEBUG', filter_var(env('APP_DEBUG', true), FILTER_VALIDATE_BOOLEAN));
 if (!defined('APP_KEY')) define('APP_KEY', env('APP_KEY', 'base64:nuPHPSecretKey12345678901234567890'));
@@ -47,6 +47,6 @@ if (!defined('EMAIL_ADR')) define('EMAIL_ADR', env('EMAIL_ADR', 'admin@nuphp.loc
 if (!defined('EMAIL_PASS')) define('EMAIL_PASS', env('EMAIL_PASS', ''));
 
 // Version
-if (!defined('APP_VERSION')) define('APP_VERSION', env('APP_VERSION', '1.0.0'));
-if (!defined('NUPHP')) define('NUPHP', env('NUPHP', '2.0.0'));
+if (!defined('APP_VERSION')) define('APP_VERSION', env('APP_VERSION', '3.0.4'));
+if (!defined('NUPHP')) define('NUPHP', env('NUPHP', '3.0.4'));
 
