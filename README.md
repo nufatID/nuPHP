@@ -186,12 +186,16 @@ Route::add('/user/profile/([0-9]+)', function ($id) {
 });
 ```
 
-### 4. Helper Global Bawaan
+### 4. Helper Global & Fitur Terintegrasi
 
-nuPHP v3.0.0 dilengkapi helper global serbaguna:
+nuPHP v3.0.0 dilengkapi helper global dan fitur terintegrasi ala Laravel:
 
 - `request($key = null, $default = null)` — Mengambil data input request GET/POST.
 - `session($key = null, $default = null)` — Membaca/menyimpan data session secara instan.
+- `session_flash($key, $val)` & `flash($key)` — Notifikasi flash message 1x baca (terintegrasi dengan direktif Nutemplete `@flash('success')`).
+- `validator($data, $rules)` — Form request validation (`required`, `email`, `numeric`, `min`, `max`).
+- `middleware($names)` — Pipeline middleware runner (`App\Core\Middleware`).
+- `resource($data, $callback)` — API Resource JSON Transformer (`App\Core\Resource`).
 - `redirect($url)` — Redirect URL dengan penanganan base URL otomatis.
 - `response($data, $status = 200)` — Mengirimkan JSON response dengan header HTTP.
 - `env($key, $default = null)` — Membaca nilai dari konfigurasi `.env`.

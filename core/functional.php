@@ -100,6 +100,51 @@ function db()
     return null;
 }
 
+function validator(array $data, array $rules)
+{
+    return \App\Core\Validator::make($data, $rules);
+}
+
+function session_flash($key, $value = null)
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if ($value !== null) {
+        $_SESSION['_flash'][$key] = $value;
+        return $value;
+    }
+    $val = $_SESSION['_flash'][$key] ?? null;
+    unset($_SESSION['_flash'][$key]);
+    return $val;
+}
+
+function flash($key = null)
+{
+    if ($key === null) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $flashes = $_SESSION['_flash'] ?? [];
+        unset($_SESSION['_flash']);
+        return $flashes;
+    }
+    return session_flash($key);
+}
+
+function middleware(string|array $names)
+{
+    return \App\Core\Middleware::run($names);
+}
+
+function resource(mixed $data, ?callable $callback = null)
+{
+    if (is_iterable($data) && !is_array($data) && !($data instanceof \Illuminate\Support\Collection)) {
+        return \App\Core\Resource::collection($data, $callback);
+    }
+    return \App\Core\Resource::make($data, $callback);
+}
+
 function textToSlug($text = '')
 {
     $text = trim($text);
