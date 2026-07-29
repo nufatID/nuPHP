@@ -27,8 +27,8 @@
         "fakerphp/faker": "^1.23",
         "lasserafn/php-initial-avatar-generator": "^4.0",
         "picqer/php-barcode-generator": "^2.4 || ^3.0",
-        "nufat/cli": "^3.0.0",
-        "nufat/nutemplete": "^3.0.0"
+        "nufat/cli": "^3.0.1",
+        "nufat/nutemplete": "^3.0.1"
     },
     "autoload": {
         "files": [
