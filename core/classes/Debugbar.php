@@ -34,9 +34,11 @@ class Debugbar
             }
             $queryCount = count($queries);
 
+            $version = defined('NUPHP') ? NUPHP : '3.0.5';
+
             $debugHtml = <<<HTML
 <div id="nuphp-debugbar" style="position:fixed;bottom:12px;right:12px;z-index:999999;font-family:system-ui,-apple-system,sans-serif;font-size:12px;background:rgba(15,23,42,0.9);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);color:#f8fafc;padding:6px 14px;border-radius:30px;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:flex;align-items:center;gap:12px;">
-    <span style="font-weight:700;color:#38bdf8;">🚀 nuPHP v3.0.0</span>
+    <span style="font-weight:700;color:#38bdf8;">🚀 nuPHP v{$version}</span>
     <span style="border-left:1px solid rgba(255,255,255,0.2);height:12px;"></span>
     <span>⏱️ <b>{$execTime} ms</b></span>
     <span>💾 <b>{$memoryPeak} MB</b></span>
