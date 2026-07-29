@@ -35,30 +35,50 @@ if (!function_exists('autoloadRoute')) {
 
         for ($i = 0; $i < $maxDepth; $i++) {
             $currentPath = implode('/', array_slice($pathParts, 0, $i + 1));
+            $nextPart = $pathParts[$i + 1] ?? null;
 
             foreach ($controllerBaseDirs as $controllerBaseDir) {
-                $controllerFilePath = $controllerBaseDir . '/' . $currentPath . '.php';
-                if (file_exists($controllerFilePath)) {
-                    require_once $controllerFilePath;
-                    $className = ucfirst($pathParts[$i]);
-                    $methodName = $pathParts[$i + 1] ?? 'index';
+                // Variations of file names: path.php, PathController.php, Path.php
+                $possibleFiles = [
+                    $controllerBaseDir . '/' . $currentPath . '.php',
+                    $controllerBaseDir . '/' . $currentPath . 'Controller.php',
+                    $controllerBaseDir . '/' . dirname($currentPath) . '/' . ucfirst(basename($currentPath)) . '.php',
+                    $controllerBaseDir . '/' . dirname($currentPath) . '/' . ucfirst(basename($currentPath)) . 'Controller.php',
+                ];
 
-                    if (class_exists($className)) {
-                        $controller = new $className();
-                        if (method_exists($controller, $methodName)) {
-                            $params = array_slice($pathParts, $i + 2);
-                            call_user_func_array([$controller, $methodName], $params);
-                            return;
-                        } elseif (method_exists($controller, 'index')) {
-                            $params = array_slice($pathParts, $i + 1);
-                            call_user_func_array([$controller, 'index'], $params);
-                            return;
+                foreach ($possibleFiles as $controllerFilePath) {
+                    if (file_exists($controllerFilePath)) {
+                        require_once $controllerFilePath;
+
+                        $baseName = ucfirst(basename($currentPath));
+                        $possibleClasses = [
+                            $baseName,
+                            $baseName . 'Controller',
+                            'App\\Controllers\\' . $baseName,
+                            'App\\Controllers\\' . $baseName . 'Controller',
+                        ];
+
+                        foreach ($possibleClasses as $className) {
+                            if (class_exists($className)) {
+                                $controller = new $className();
+                                $methodName = $nextPart ?? 'index';
+
+                                if ($nextPart !== null && method_exists($controller, $methodName)) {
+                                    $params = array_slice($pathParts, $i + 2);
+                                    call_user_func_array([$controller, $methodName], $params);
+                                    return;
+                                } elseif (method_exists($controller, 'index')) {
+                                    $params = array_slice($pathParts, $i + 1);
+                                    call_user_func_array([$controller, 'index'], $params);
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            // Check view directory
+            // Check view directory fallback (e.g. views/about.nu.php)
             $viewPath = __DIR__ . '/../views/' . $currentPath . '.nu.php';
             if (file_exists($viewPath)) {
                 $params = array_slice($pathParts, $i + 1);
