@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd483700a6cae9a0732a23ce0d639b96",
+    "content-hash": "9b5f98ef7b4f944ce80368d5d0482aad",
     "packages": [
         {
             "name": "brick/math",
@@ -2486,11 +2486,17 @@
         },
         {
             "name": "nufat/cli",
-            "version": "dev-main",
+            "version": "v3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nufatID/cli.git",
+                "reference": "de858c0b89e7aabf21b677945915c0b76a79d36a"
+            },
             "dist": {
-                "type": "path",
-                "url": "/home/nunu/nufat-cli",
-                "reference": "ff01da7045a730853f8e7e85cc49718e37a22451"
+                "type": "zip",
+                "url": "https://api.github.com/repos/nufatID/cli/zipball/de858c0b89e7aabf21b677945915c0b76a79d36a",
+                "reference": "de858c0b89e7aabf21b677945915c0b76a79d36a",
+                "shasum": ""
             },
             "require": {
                 "php": "^8.1 || ^8.2 || ^8.3"
@@ -2511,17 +2517,25 @@
                 }
             ],
             "description": "nuPHP CLI Tool for Code Generation, Server, and Database Management",
-            "transport-options": {
-                "relative": false
-            }
+            "support": {
+                "source": "https://github.com/nufatID/cli/tree/v3.0.1",
+                "issues": "https://github.com/nufatID/cli/issues"
+            },
+            "time": "2026-07-29T00:55:18+00:00"
         },
         {
             "name": "nufat/nutemplete",
-            "version": "dev-main",
+            "version": "v3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nufatID/Nutemplete.git",
+                "reference": "43891942aa5a46a7c4fde6793f84058a38a3f20c"
+            },
             "dist": {
-                "type": "path",
-                "url": "/home/nunu/Nutemplete",
-                "reference": "c519b9430818ebdc67bb859a138e3441a0a9bb8a"
+                "type": "zip",
+                "url": "https://api.github.com/repos/nufatID/Nutemplete/zipball/43891942aa5a46a7c4fde6793f84058a38a3f20c",
+                "reference": "43891942aa5a46a7c4fde6793f84058a38a3f20c",
+                "shasum": ""
             },
             "require": {
                 "php": "^8.1 || ^8.2 || ^8.3"
@@ -2545,9 +2559,11 @@
                 }
             ],
             "description": "Fast & Lightweight PHP Template Engine with Blade Directives & HTML Component Support",
-            "transport-options": {
-                "relative": false
-            }
+            "support": {
+                "source": "https://github.com/nufatID/Nutemplete/tree/v3.0.1",
+                "issues": "https://github.com/nufatID/Nutemplete/issues"
+            },
+            "time": "2026-07-29T00:55:00+00:00"
         },
         {
             "name": "overtrue/pinyin",
@@ -4480,10 +4496,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "nufat/cli": 20,
-        "nufat/nutemplete": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
