@@ -2525,16 +2525,16 @@
         },
         {
             "name": "nufat/nutemplete",
-            "version": "v3.0.1",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nufatID/Nutemplete.git",
-                "reference": "43891942aa5a46a7c4fde6793f84058a38a3f20c"
+                "reference": "02781db397d8056f11744755b3d5ede114e98a11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nufatID/Nutemplete/zipball/43891942aa5a46a7c4fde6793f84058a38a3f20c",
-                "reference": "43891942aa5a46a7c4fde6793f84058a38a3f20c",
+                "url": "https://api.github.com/repos/nufatID/Nutemplete/zipball/02781db397d8056f11744755b3d5ede114e98a11",
+                "reference": "02781db397d8056f11744755b3d5ede114e98a11",
                 "shasum": ""
             },
             "require": {
